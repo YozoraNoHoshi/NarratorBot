@@ -17,7 +17,7 @@ client.on(
             // standard commands that start with prefix (default '!')
             if (message.content.trimLeft().startsWith(BOT_PREFIX)) {
                 let response: string | void = Bot.commandCenter(message);
-                if (response) message.channel.send(`\`${response}\``);
+                if (response) message.channel.send(`\`\`\`${response}\`\`\``);
             }
             // emoji/image response, expects format '[emoji]'
             else if (message.content.startsWith('[') && message.content.endsWith(']')) {
