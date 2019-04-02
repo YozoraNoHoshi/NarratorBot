@@ -23,4 +23,14 @@ export const EIGHT_BALL_RESPONSES: string[] = [
 
 export const FLIP_RESPONSES: string[] = ['Heads!', 'Tails!'];
 
+interface helpShape {
+    [name: string]: string;
+}
+export const HELP_RESPONSES: helpShape = {
+    help: 'You just called this command.',
+    flip: 'Flips a coin.',
+    '8': 'Asks the magic 8 ball a question. Questions must end in "?"',
+    roll: 'Rolls a X sided die. Default 6. A second parameter can be added to specify the number of sides.',
+};
+
 // const NIPPON_STEEL: string = '';
