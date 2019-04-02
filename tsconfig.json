@@ -9,5 +9,5 @@
     },
     "include": ["./src/**/*"],
     "compileOnSave": true,
-    "exclude": [".eslintrc.js", ".gitignore", ".prettierrc.js"]
+    "exclude": [".eslintrc.js", ".gitignore", ".prettierrc.js", "jest.config.js"]
 }
