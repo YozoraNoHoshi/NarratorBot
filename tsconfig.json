@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "outDir": "./built",
+        "allowJs": true,
+        "target": "es5",
+        "noImplicitReturns": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true
+    },
+    "include": ["./src/**/*"],
+    "compileOnSave": true,
+    "exclude": [".eslintrc.js", ".gitignore", ".prettierrc.js"]
+}
