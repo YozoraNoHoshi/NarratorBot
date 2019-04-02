@@ -21,4 +21,6 @@ export const EIGHT_BALL_RESPONSES: string[] = [
     'Very doubtful.',
 ];
 
+export const FLIP_RESPONSES: string[] = ['Heads!', 'Tails!'];
+
 // const NIPPON_STEEL: string = '';
