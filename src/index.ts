@@ -16,7 +16,7 @@ client.on(
         try {
             // standard commands that start with prefix (default '!')
             if (message.content.trimLeft().startsWith(BOT_PREFIX)) {
-                let response: string | void = Bot.commandCenter(message);
+                let response: string | void = await Bot.commandCenter(message);
                 if (response) message.channel.send(`\`\`\`${response}\`\`\``);
             }
             // emoji/image response, expects format '[emoji]'
@@ -27,7 +27,7 @@ client.on(
             }
         } catch (error) {
             // if something blows up, bot doesn't crash
-            message.channel.send(`:blobderpy: \`Error ${error.status}: ${error.message}\` :blobderpy:`);
+            message.channel.send(`\`Error ${error.status}: ${error.message}\``);
         }
     },
 );
