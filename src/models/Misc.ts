@@ -22,6 +22,10 @@ class Misc {
         let result = Math.ceil(Math.random() * input);
         return `You rolled a ${result}!`;
     }
+
+    static thatWasALie(): string {
+        return '... but that was a LIE!';
+    }
 }
 
 export default Misc;

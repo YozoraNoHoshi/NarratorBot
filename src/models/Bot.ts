@@ -11,6 +11,7 @@ class Bot {
         flip: Misc.flip,
         roll: Misc.dieRoll,
         '8': Misc.eightBall,
+        lie: Misc.thatWasALie,
         add: CustomEmoji.addEmoji,
         delete: CustomEmoji.deleteEmoji,
         emoji: CustomEmoji.getEmojiList,
