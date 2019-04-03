@@ -20,7 +20,7 @@ Install Packages:
 ---
 
 To run a copy of this bot, you will require your own Discord bot - see [Discord's Developer Portal](https://discordapp.com/developers/applications/).   
-####Store your bot's token and client id somewhere, you will need it later.  
+**Store your bot's token and client id somewhere, you will need it later.**   
 Once you have created a bot, place the bot's token in a `.env` file in the root directory of the project.
 > token='YOUR BOT TOKEN HERE'
 
@@ -29,7 +29,7 @@ Add the bot to your discord server using this url:
 
 Replace the `client_id` with your bot's `client_id`.
 
-####Start the bot with  `npm start`
+**Start the bot with  `npm start`**     
 If the bot starts successfully, you should see 
 >Drain your glass!   
 
