@@ -1,6 +1,6 @@
-import { HELP_RESPONSES } from './responses';
-import CustomEmoji from './models/Emoji';
-import Misc from './models/Misc';
+import { HELP_RESPONSES } from '../responses';
+import CustomEmoji from './Emoji';
+import Misc from './Misc';
 type MethodMap = { [name: string]: (arg0: any) => void };
 
 class Bot {

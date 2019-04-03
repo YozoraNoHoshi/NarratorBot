@@ -1,5 +1,5 @@
 import { FLIP_RESPONSES, EIGHT_BALL_RESPONSES } from '../../responses';
-import Bot from '../../Bot';
+import Bot from '../Bot';
 import { BOT_PREFIX } from '../../config';
 
 test('Bot flip', async () => {

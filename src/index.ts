@@ -1,6 +1,6 @@
 import discord = require('discord.js');
 import { TOKEN, BOT_PREFIX } from './config';
-import Bot from './Bot';
+import Bot from './models/Bot';
 import CustomEmoji from './models/Emoji';
 
 const client: any = new discord.Client();
