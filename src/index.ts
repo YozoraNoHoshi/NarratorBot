@@ -7,7 +7,7 @@ const client: any = new discord.Client();
 
 client.on('ready', () => {
     console.log('Drain your glass!');
-    client.user.setActivity('anime.', { type: 'WATCHING' });
+    client.user.setActivity('Maki suffer.', { type: 'WATCHING' });
 });
 
 client.on(
@@ -15,7 +15,7 @@ client.on(
     async (message: any): Promise<string | void> => {
         if (message.author.bot) return;
         try {
-            // standard commands that start with prefix (default '!')
+            // standard commands that start with prefix
             if (message.content.trimLeft().startsWith(BOT_PREFIX)) {
                 let response: string | void = await Bot.commandCenter(message);
                 if (response) message.channel.send(`\`\`\`${response}\`\`\``);
