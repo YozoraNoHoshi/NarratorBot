@@ -1,6 +1,7 @@
 import discord = require('discord.js');
 import { TOKEN, BOT_PREFIX } from './config';
 import Bot from './Bot';
+import CustomEmoji from './models/Emoji';
 
 const client: any = new discord.Client();
 
@@ -22,7 +23,7 @@ client.on(
             // emoji/image response, expects format '[emoji]'
             else if (message.content.startsWith('[') && message.content.endsWith(']')) {
                 let emoji: string = message.content.slice(1, -1);
-                let response: string | void = await Bot.emoji(emoji);
+                let response: string | void = await CustomEmoji.emoji(emoji);
                 if (response) message.channel.send(new discord.Attachment(response));
             }
         } catch (error) {
