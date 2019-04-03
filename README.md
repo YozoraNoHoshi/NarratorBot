@@ -25,7 +25,7 @@ Once you have created a bot, place the bot's token in a `.env` file in the root 
 > token='YOUR BOT TOKEN HERE'
 
 Add the bot to your discord server using this url: 
->https://discordapp.com/oauth2/authorize?client_id=BOT CLIENT ID HERE&scope=bot&permissions=370752  
+>https://discordapp.com/oauth2/authorize?client_id=BOTCLIENTID&scope=bot&permissions=370752  
 
 Replace the `client_id` with your bot's `client_id`.
 
