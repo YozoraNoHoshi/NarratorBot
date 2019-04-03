@@ -1,3 +1,5 @@
+import { helpShape } from './types';
+
 // Magic 8 Ball responses
 export const EIGHT_BALL_RESPONSES: string[] = [
     'It is certain.',
@@ -24,10 +26,6 @@ export const EIGHT_BALL_RESPONSES: string[] = [
 
 // Outcomes for flipping a coin
 export const FLIP_RESPONSES: string[] = ['Heads!', 'Tails!'];
-
-type helpShape = {
-    [name: string]: string;
-};
 
 // responses for the !help command
 export const HELP_RESPONSES: helpShape = {

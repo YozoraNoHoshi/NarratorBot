@@ -1,7 +1,7 @@
 import { HELP_RESPONSES } from '../responses';
 import CustomEmoji from './Emoji';
 import Misc from './Misc';
-type MethodMap = { [name: string]: (arg0: any) => void };
+import { MethodMap } from '../types';
 
 class Bot {
     // maps the triggering command to the method
@@ -17,8 +17,14 @@ class Bot {
         emoji: CustomEmoji.getEmojiList,
     };
 
+    // Mapping of command menus to their methodMaps
+    // private static methodMapSquared: SquaredMap = {
+    //     default: Bot.methodMap,
+    // };
+
     // This method allows for dynamic calling of other methods based on the incoming message.
-    static async commandCenter(message: any): Promise<string | void> {
+    // Pass in your own method map to use a different set of commands, useful for nested menus
+    static async commandCenter(message: any, methodMap: MethodMap = Bot.methodMap): Promise<string | void> {
         let messageParts: string[] = message.content
             .trim()
             .toLowerCase()
@@ -26,9 +32,10 @@ class Bot {
             .split(' ');
 
         if (Bot.methodMap.hasOwnProperty(messageParts[0])) {
-            let action: any = Bot.methodMap[messageParts[0]];
+            let action: (arg0: any) => void = methodMap[messageParts[0]];
             // calls method with first argument containing the rest of the message
             // >8 what is life? -> action('what is life?'), where action is the function from the methodMap
+            // if (action === Bot.commandCenter) return await action(msg, commandList)
             return await action(messageParts.slice(1).join(' '));
         } else return;
     }
