@@ -1,5 +1,4 @@
 # NFU's Custom Discord Bot
----
 
 
 Source code for my private discord's bot. 
