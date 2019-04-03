@@ -1,3 +1,4 @@
+// Magic 8 Ball responses
 export const EIGHT_BALL_RESPONSES: string[] = [
     'It is certain.',
     'It is decidedly so.',
@@ -21,11 +22,14 @@ export const EIGHT_BALL_RESPONSES: string[] = [
     'Very doubtful.',
 ];
 
+// Outcomes for flipping a coin
 export const FLIP_RESPONSES: string[] = ['Heads!', 'Tails!'];
 
 type helpShape = {
     [name: string]: string;
 };
+
+// responses for the !help command
 export const HELP_RESPONSES: helpShape = {
     help: 'You just called this command.',
     emoji: 'Displays the list of all emojis in the store.',
@@ -35,5 +39,3 @@ export const HELP_RESPONSES: helpShape = {
     '8': 'Asks the magic 8 ball a question. Questions must end in "?"',
     roll: 'Rolls a X sided die. Default 6. A second parameter can be added to specify the number of sides.',
 };
-
-// const NIPPON_STEEL: string = '';

@@ -1,3 +1,4 @@
+// Connects to a postgres database
 import { Client } from 'pg';
 import { DB_URI } from './config';
 

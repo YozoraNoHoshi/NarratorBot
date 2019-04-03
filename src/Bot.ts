@@ -27,11 +27,12 @@ class Bot {
         if (Bot.methodMap.hasOwnProperty(messageParts[0])) {
             let action: any = Bot.methodMap[messageParts[0]];
             // calls method with first argument containing the rest of the message
-            // >8 what is life? -> action('what is life?')
+            // >8 what is life? -> action('what is life?'), where action is the function from the methodMap
             return await action(messageParts.slice(1).join(' '));
         } else return;
     }
 
+    // Displays all available commands from the bot
     private static helpWanted(): string {
         let response: string = '';
         let noDescription: string = 'No description provided.';
@@ -62,6 +63,7 @@ class Bot {
         return `You rolled a ${result}!`;
     }
 
+    // returns all the callable emojis for use with the [<emoji>] syntax
     private static async getEmojiList(): Promise<string> {
         let result = await db.query(`SELECT name FROM emojis`);
         return result.rows.reduce((acc, val) => {
@@ -69,6 +71,7 @@ class Bot {
         }, '');
     }
 
+    // adds an emoji to the database. requires arguments in the form '<name> <url>'
     private static async addEmoji(entry: string): Promise<string | void> {
         let newEmoji: string[] = entry.split(' ');
         let result = await db.query(`SELECT name, image FROM emojis WHERE name = $1`, [newEmoji[0]]);
@@ -89,6 +92,7 @@ class Bot {
         }
     }
 
+    // deletes an emoji from the database. requires the name of the emoji
     private static async deleteEmoji(name: string): Promise<string> {
         let result = await db.query(`DELETE FROM emojis WHERE name = $1 RETURNING name`, [name]);
         if (result.rows[0]) return `Deleted ${result.rows[0].name}`;

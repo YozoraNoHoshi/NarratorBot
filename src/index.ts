@@ -6,7 +6,7 @@ const client: any = new discord.Client();
 
 client.on('ready', () => {
     console.log('Drain your glass!');
-    client.user.setActivity('anime', { type: 'WATCHING' });
+    client.user.setActivity('anime.', { type: 'WATCHING' });
 });
 
 client.on(
