@@ -1,8 +1,8 @@
-import { FLIP_RESPONSES, EIGHT_BALL_RESPONSES } from '../../responses';
+import { EIGHT_BALL_RESPONSES } from '../../responses';
 import Misc from '../Misc';
 
 test('Bot flip', () => {
-    expect(FLIP_RESPONSES).toContain(Misc.flip());
+    expect(Misc.flip()).toContain("Result of today's flip");
 });
 test('Bot 8ball', () => {
     expect(EIGHT_BALL_RESPONSES).toContain(Misc.eightBall('What is life?'));

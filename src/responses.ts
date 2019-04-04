@@ -25,7 +25,7 @@ export const EIGHT_BALL_RESPONSES: string[] = [
 ];
 
 // Outcomes for flipping a coin
-export const FLIP_RESPONSES: string[] = ['Heads!', 'Tails!'];
+export const FLIP_RESPONSES: string[] = ['Heads', 'Tails'];
 
 // responses for the !help command
 export const HELP_RESPONSES: helpShape = {

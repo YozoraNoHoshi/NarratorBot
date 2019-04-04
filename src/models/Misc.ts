@@ -1,16 +1,17 @@
 import { EIGHT_BALL_RESPONSES, FLIP_RESPONSES } from '../responses';
 import randomChoice from '../helpers/randomChoice';
+import fMessage, { BOLD, ITALICS, BLOCK } from '../helpers/fMessage';
 
 class Misc {
     // returns the 8 ball response for the question
     static eightBall(message: string): string {
         if (!message.endsWith('?')) return "That doesn't look like a question.";
-        return randomChoice(EIGHT_BALL_RESPONSES);
+        return fMessage(randomChoice(EIGHT_BALL_RESPONSES), BLOCK);
     }
 
     // flips a two sided coin and returns the result
     static flip(): string {
-        return `Result of today's flip: **_${randomChoice(FLIP_RESPONSES)}!_**`;
+        return `Result of today's flip: ${fMessage(randomChoice(FLIP_RESPONSES), BOLD, ITALICS)}!`;
     }
 
     // rolls a virtual X sided die and returns the result. input must be positive and an actual number
