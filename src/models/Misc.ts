@@ -14,7 +14,7 @@ class Misc {
     }
 
     // rolls a virtual X sided die and returns the result. input must be positive and an actual number
-    static dieRoll(sides: string): string {
+    static dieRoll(sides: string = ''): string {
         if (sides.toLowerCase().includes('infinity')) return 'No.';
         let input: number = Number(sides) || 6;
         if (input < 0) return `Maybe try something higher than ${input}?`;
