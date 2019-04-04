@@ -17,6 +17,7 @@ client.on(
         try {
             // standard commands that start with prefix
             if (message.content.trimLeft().startsWith(BOT_PREFIX)) {
+                message.noPrefix = message.content.slice(BOT_PREFIX.length);
                 let response: string | void = await Bot.commandCenter(message);
                 if (response) message.channel.send(`\`\`\`${response}\`\`\``);
             }

@@ -1,10 +1,10 @@
 import { HELP_RESPONSES } from '../responses';
 import CustomEmoji from './Emoji';
 import Misc from './Misc';
-import { MethodMap } from '../types';
+import { MethodMap, BotCommand } from '../types';
 
 class Bot {
-    // maps the triggering command to the method
+    // maps the triggering command to the method, or to a sub-MethodMap for nested menus
     // commands are in the form <Prefix>[key]
     private static methodMap: MethodMap = {
         help: Bot.helpWanted,
@@ -17,26 +17,22 @@ class Bot {
         emoji: CustomEmoji.getEmojiList,
     };
 
-    // Mapping of command menus to their methodMaps
-    // private static methodMapSquared: SquaredMap = {
-    //     default: Bot.methodMap,
-    // };
-
     // This method allows for dynamic calling of other methods based on the incoming message.
     // Pass in your own method map to use a different set of commands, useful for nested menus
     static async commandCenter(message: any, methodMap: MethodMap = Bot.methodMap): Promise<string | void> {
-        let messageParts: string[] = message.content
-            .trim()
-            .toLowerCase()
-            .slice(1)
-            .split(' ');
-
-        if (Bot.methodMap.hasOwnProperty(messageParts[0])) {
-            let action: (arg0: any) => void = methodMap[messageParts[0]];
-            // calls method with first argument containing the rest of the message
+        let messageParts: string[] = message.noPrefix.trim().split(' ');
+        let command = messageParts[0].toLowerCase();
+        if (methodMap.hasOwnProperty(command)) {
+            let action: BotCommand = methodMap[command];
+            let restOfMessage: string = messageParts.slice(1).join(' ');
+            // Recursively calls command center for processing submenu actions.
+            // NOTE - This really should be a type guard to check that it is of type MethodMap
+            // if (typeof action !== 'function') {
+            //     message.noPrefix = restOfMessage;
+            //     return await Bot.commandCenter(message, action);
+            // }
             // >8 what is life? -> action('what is life?'), where action is the function from the methodMap
-            // if (action === Bot.commandCenter) return await action(msg, commandList)
-            return await action(messageParts.slice(1).join(' '));
+            return await action(restOfMessage);
         } else return;
     }
 
