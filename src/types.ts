@@ -1,4 +1,7 @@
-export type MethodMap = { [name: string]: (arg0: any) => void };
+// Either a function or another MethodMap which indicates a submenu
+export type BotCommand = (arg0: string) => any | MethodMap;
+
+export type MethodMap = { [name: string]: BotCommand };
 export type helpShape = {
     [name: string]: string;
 };
