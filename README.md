@@ -1,4 +1,4 @@
-# NFU's Custom Discord Bot
+# Narrator - Discord Bot
 
 
 Source code for my private discord's bot. 
@@ -13,14 +13,19 @@ Clone the repository:
 `git clone git@github.com:YozoraNoHoshi/NFU-Bot.git`
 
 Install Packages:  
-`npm install  `
+`npm install`   
+
+Run the seed file:   
+`psql nfubot < seed.sql`
 
 
 ### Running a local copy
 ---
 
-To run a copy of this bot, you will require your own Discord bot - see [Discord's Developer Portal](https://discordapp.com/developers/applications/).   
+To run a copy of this bot, you will require your own Discord bot - see [Discord's Developer Portal](https://discordapp.com/developers/applications/).  
+    
 **Store your bot's token and client id somewhere, you will need it later.**   
+
 Once you have created a bot, place the bot's token in a `.env` file in the root directory of the project.
 > token='YOUR BOT TOKEN HERE'
 
@@ -34,3 +39,12 @@ If the bot starts successfully, you should see
 >Drain your glass!   
 
 in the console.
+
+###Planned Features
+---
+* Honor duel with arbitrary health (basically a glorified game of war)
+* Integration with pokesim backend to allow for Pokemon catches
+* Hit certain game APIs to retrieve data without having to login
+* Slap a user
+* Better formatting for messages
+* Some other fun minigames 
