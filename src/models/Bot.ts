@@ -27,20 +27,24 @@ class Bot {
             let restOfMessage: string = messageParts.slice(1).join(' ');
             // Recursively calls command center for processing submenu actions.
             // NOTE - This really should be a type guard to check that it is of type MethodMap
-            // if (typeof action !== 'function') {
-            //     message.noPrefix = restOfMessage;
-            //     return await Bot.commandCenter(message, action);
-            // }
+            if (action === Bot.helpWanted) {
+                return Bot.helpWanted(restOfMessage, methodMap);
+            } else if (typeof action !== 'function') {
+                message.noPrefix = restOfMessage;
+                return await Bot.commandCenter(message, action);
+            }
             // >8 what is life? -> action('what is life?'), where action is the function from the methodMap
-            return await action(restOfMessage);
+            return await action(restOfMessage, message);
         } else return;
     }
 
     // Displays all available commands from the bot
-    private static helpWanted(): string {
+    // Maybe should recursively display submenus as well...
+    private static helpWanted(restofMessage: string, methodMap: MethodMap): string {
         let response: string = '**__Available Commands__**';
         let noDescription: string = 'No description provided.';
-        for (let key in Bot.methodMap) {
+        for (let key in methodMap) {
+            // Should not only be from the help_responses object, should be dynamic somehow
             response += `**${key}**: _${HELP_RESPONSES[key] || noDescription}_\n`;
         }
         return response;
