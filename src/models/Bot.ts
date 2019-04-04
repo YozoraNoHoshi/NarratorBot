@@ -38,10 +38,10 @@ class Bot {
 
     // Displays all available commands from the bot
     private static helpWanted(): string {
-        let response: string = '';
+        let response: string = '**__Available Commands__**';
         let noDescription: string = 'No description provided.';
         for (let key in Bot.methodMap) {
-            response += `${key}: ${HELP_RESPONSES[key] || noDescription}\n`;
+            response += `**${key}**: _${HELP_RESPONSES[key] || noDescription}_\n`;
         }
         return response;
     }

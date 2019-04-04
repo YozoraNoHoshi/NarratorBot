@@ -10,7 +10,7 @@ class Misc {
 
     // flips a two sided coin and returns the result
     static flip(): string {
-        return randomChoice(FLIP_RESPONSES);
+        return `Result of today's flip: **_${randomChoice(FLIP_RESPONSES)}!_**`;
     }
 
     // rolls a virtual X sided die and returns the result. input must be positive and an actual number
@@ -23,7 +23,15 @@ class Misc {
     }
 
     static thatWasALie(): string {
+        // should return either that was the truth or that was a lie depending on some arbitrary condition
         return '... but that was a LIE!';
+    }
+
+    static duel(): string {
+        // initiates a duel between two users, the sender of the message + the first user mentioned in the message.
+        // returns the victor
+        // Might need to become its own model due to the -planned- complexity.
+        return '';
     }
 }
 

@@ -19,7 +19,7 @@ client.on(
             if (message.content.trimLeft().startsWith(BOT_PREFIX)) {
                 message.noPrefix = message.content.slice(BOT_PREFIX.length);
                 let response: string | void = await Bot.commandCenter(message);
-                if (response) message.channel.send(`\`\`\`${response}\`\`\``);
+                if (response) message.channel.send(response);
             }
             // emoji/image response, expects format '[emoji]'
             else if (message.content.startsWith('[') && message.content.endsWith(']')) {

@@ -6,9 +6,12 @@ class CustomEmoji {
     // returns all the callable emojis for use with the [<emoji>] syntax
     static async getEmojiList(): Promise<string> {
         let result = await db.query(`SELECT name FROM emojis`);
-        return result.rows.reduce((acc, val) => {
-            return acc + `\n${val.name}`;
-        }, '');
+        return (
+            '**__Available Emoji__**' +
+            result.rows.reduce((acc, val) => {
+                return acc + `\n_${val.name}_`;
+            }, '')
+        );
     }
 
     // adds an emoji to the database. requires arguments in the form '<name> <url>'
@@ -21,21 +24,21 @@ class CustomEmoji {
                 newEmoji[1],
                 newEmoji[0],
             ]);
-            return `Updated the ${response.rows[0].name} emoji.`;
+            return `\`Updated the ${response.rows[0].name} emoji.\``;
         } else {
             // Add the emoji
             let response = await db.query(`INSERT INTO emojis (name, image) VALUES ($1, $2)  RETURNING name`, [
                 newEmoji[0],
                 newEmoji[1],
             ]);
-            return `Added the ${response.rows[0].name} emoji.`;
+            return `\`Added the ${response.rows[0].name} emoji.\``;
         }
     }
 
     // deletes an emoji from the database. requires the name of the emoji
     static async deleteEmoji(name: string): Promise<string> {
         let result = await db.query(`DELETE FROM emojis WHERE name = $1 RETURNING name`, [name]);
-        if (result.rows[0]) return `Deleted ${result.rows[0].name}`;
+        if (result.rows[0]) return `\`Deleted emoji ${result.rows[0].name}\``;
         throw createError(`Could not find emoji named ${name}.`, 404);
     }
 
