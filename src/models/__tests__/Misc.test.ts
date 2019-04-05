@@ -5,11 +5,11 @@ test('Bot flip', () => {
     expect(Misc.flip()).toContain("Result of today's flip");
 });
 test('Bot 8ball', () => {
-    expect(EIGHT_BALL_RESPONSES).toContain(Misc.eightBall('What is life?'));
-    expect(Misc.eightBall(`what is life`)).toBe("That doesn't look like a question.");
+    expect(EIGHT_BALL_RESPONSES).toContain(Misc.eightBall({ noPrefix: 'What is life?' }));
+    expect(Misc.eightBall({ noPrefix: `what is life` })).toBe("That doesn't look like a question.");
 });
 test('Bot die roll', () => {
-    expect(Misc.dieRoll()).toContain('You rolled a');
-    expect(Misc.dieRoll('-1')).toBe('Maybe try something higher than -1?');
-    expect(Misc.dieRoll('Infinity')).toBe('No.');
+    expect(Misc.dieRoll({ noPrefix: '' })).toContain('You rolled a');
+    expect(Misc.dieRoll({ noPrefix: '-1' })).toBe('Maybe try something higher than -1?');
+    expect(Misc.dieRoll({ noPrefix: 'Infinity' })).toBe('No.');
 });

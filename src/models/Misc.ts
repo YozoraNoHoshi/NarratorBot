@@ -1,11 +1,13 @@
 import { EIGHT_BALL_RESPONSES, FLIP_RESPONSES } from '../responses';
 import randomChoice from '../helpers/randomChoice';
 import fMessage, { BOLD, ITALICS, BLOCK } from '../helpers/fMessage';
+import { DiscordMessage } from '../types';
+import createError from '../helpers/createError';
 
 class Misc {
     // returns the 8 ball response for the question
-    static eightBall(message: string): string {
-        if (!message.endsWith('?')) return "That doesn't look like a question.";
+    static eightBall(message: DiscordMessage): string {
+        if (!message.noPrefix.endsWith('?')) return "That doesn't look like a question.";
         return fMessage(randomChoice(EIGHT_BALL_RESPONSES), BLOCK);
     }
 
@@ -15,9 +17,9 @@ class Misc {
     }
 
     // rolls a virtual X sided die and returns the result. input must be positive and an actual number
-    static dieRoll(sides: string = ''): string {
-        if (sides.toLowerCase().includes('infinity')) return 'No.';
-        let input: number = Number(sides) || 6;
+    static dieRoll(message: DiscordMessage): string {
+        if (message.noPrefix.toLowerCase().includes('infinity')) return 'No.';
+        let input: number = Number(message.noPrefix) || 6;
         if (input < 0) return `Maybe try something higher than ${input}?`;
         let result = Math.ceil(Math.random() * input);
         return `You rolled a ${result} out of ${input}!`;
@@ -26,13 +28,6 @@ class Misc {
     static thatWasALie(): string {
         // should return either that was the truth or that was a lie depending on some arbitrary condition
         return '... but that was a LIE!';
-    }
-
-    static duel(): string {
-        // initiates a duel between two users, the sender of the message + the first user mentioned in the message.
-        // returns the victor
-        // Might need to become its own model due to the -planned- complexity.
-        return '';
     }
 }
 

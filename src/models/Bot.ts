@@ -1,10 +1,11 @@
 import { HELP_RESPONSES } from '../responses';
 import CustomEmoji from './Emoji';
 import Misc from './Misc';
-import { MethodMap, BotCommand, SendMsgEmbed } from '../types';
+import { MethodMap, BotCommand, SendMsgEmbed, DiscordEmbed, DiscordMessage } from '../types';
 import { RichEmbed } from 'discord.js';
 import fMessage, { BOLD, ITALICS } from '../helpers/fMessage';
 import { BOT_PREFIX } from '../config';
+import PvP from './PvP';
 
 class Bot {
     // maps the triggering command to the method, or to a sub-MethodMap for nested menus
@@ -18,6 +19,7 @@ class Bot {
         add: CustomEmoji.addEmoji,
         delete: CustomEmoji.deleteEmoji,
         emoji: CustomEmoji.getEmojiList,
+        duel: PvP.duel,
     };
 
     // This method allows for dynamic calling of other methods based on the incoming message.
@@ -30,24 +32,24 @@ class Bot {
         let command = messageParts[0].toLowerCase();
         if (methodMap.hasOwnProperty(command)) {
             let action: BotCommand = methodMap[command];
-            let restOfMessage: string = messageParts.slice(1).join(' ');
+            // let restOfMessage: string = messageParts.slice(1).join(' ');
+            message.noPrefix = messageParts.slice(1).join(' ');
             // Recursively calls command center for processing submenu actions.
             // NOTE - This really should be a type guard to check that it is of type MethodMap
             if (action === Bot.helpWanted) {
-                return Bot.helpWanted(restOfMessage, methodMap);
+                return Bot.helpWanted(message, methodMap);
             } else if (typeof action !== 'function') {
-                message.noPrefix = restOfMessage;
                 return await Bot.commandCenter(message, action);
             }
             // >8 what is life? -> action('what is life?'), where action is the function from the methodMap
-            return await action(restOfMessage, message);
+            return await action(message);
         } else return;
     }
 
     // Displays all available commands from the bot
     // Maybe should recursively display submenus as well...
-    private static helpWanted(restofMessage: string, methodMap: MethodMap): SendMsgEmbed {
-        let embed: any = new RichEmbed()
+    private static helpWanted(message: DiscordMessage, methodMap: MethodMap): SendMsgEmbed {
+        let embed: DiscordEmbed = new RichEmbed()
             .setTitle(`${fMessage('Available Commands', BOLD)}`)
             .setColor('#00CED1')
             .setDescription(`Commands should be prefixed with '${BOT_PREFIX}'`)
