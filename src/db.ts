@@ -2,10 +2,10 @@
 import { Client } from 'pg';
 import { DB_URI } from './config';
 
-const client = new Client({
+const db = new Client({
     connectionString: DB_URI,
 });
 
-client.connect();
+db.connect();
 
-export default client;
+export default db;
