@@ -1,7 +1,10 @@
 import { HELP_RESPONSES } from '../responses';
 import CustomEmoji from './Emoji';
 import Misc from './Misc';
-import { MethodMap, BotCommand } from '../types';
+import { MethodMap, BotCommand, DiscordEmbed, SendMsgEmbed } from '../types';
+import { RichEmbed } from 'discord.js';
+import fMessage, { BOLD, ITALICS } from '../helpers/fMessage';
+import { BOT_PREFIX } from '../config';
 
 class Bot {
     // maps the triggering command to the method, or to a sub-MethodMap for nested menus
@@ -19,7 +22,10 @@ class Bot {
 
     // This method allows for dynamic calling of other methods based on the incoming message.
     // Pass in your own method map to use a different set of commands, useful for nested menus
-    static async commandCenter(message: any, methodMap: MethodMap = Bot.methodMap): Promise<string | void> {
+    static async commandCenter(
+        message: any,
+        methodMap: MethodMap = Bot.methodMap,
+    ): Promise<string | void | SendMsgEmbed> {
         let messageParts: string[] = message.noPrefix.trim().split(' ');
         let command = messageParts[0].toLowerCase();
         if (methodMap.hasOwnProperty(command)) {
@@ -40,14 +46,19 @@ class Bot {
 
     // Displays all available commands from the bot
     // Maybe should recursively display submenus as well...
-    private static helpWanted(restofMessage: string, methodMap: MethodMap): string {
-        let response: string = '**__Available Commands__**';
+    // convert this to a message embed
+    private static helpWanted(restofMessage: string, methodMap: MethodMap): SendMsgEmbed {
+        let embed: any = new RichEmbed()
+            .setTitle(`${fMessage('Available Commands', BOLD)}`)
+            .setColor('#00CED1')
+            .setDescription(`Commands should be prefixed with '${BOT_PREFIX}'`)
+            .setTimestamp();
         let noDescription: string = 'No description provided.';
         for (let key in methodMap) {
             // Should not only be from the help_responses object, should be dynamic somehow
-            response += `**${key}**: _${HELP_RESPONSES[key] || noDescription}_\n`;
+            embed.addField(`${fMessage(key, BOLD)}`, fMessage(HELP_RESPONSES[key] || noDescription, ITALICS));
         }
-        return response;
+        return { embed };
     }
 }
 
