@@ -3,8 +3,7 @@ import { TOKEN, BOT_PREFIX } from './config';
 import Bot from './models/Bot';
 import CustomEmoji from './models/Emoji';
 import { SendMsgEmbed } from './types';
-
-const client: any = new discord.Client();
+import client from './client';
 
 client.on('ready', () => {
     console.log('Drain your glass!');
