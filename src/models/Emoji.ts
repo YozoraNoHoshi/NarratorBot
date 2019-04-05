@@ -1,17 +1,23 @@
 import db from '../db';
 import createError from '../helpers/createError';
+import { RichEmbed } from 'discord.js';
+import fMessage, { BOLD } from '../helpers/fMessage';
+import { SendMsgEmbed } from '../types';
 
 // named as such so as to not cause confusion with Discord.js's emoji class
 class CustomEmoji {
     // returns all the callable emojis for use with the [<emoji>] syntax
-    static async getEmojiList(): Promise<string> {
+    static async getEmojiList(restOfMessage: string, message: any): Promise<SendMsgEmbed> {
         let result = await db.query(`SELECT name FROM emojis`);
-        return (
-            '**__Available Emoji__**' +
-            result.rows.reduce((acc, val) => {
-                return acc + `\n_${val.name}_`;
-            }, '')
-        );
+        let embed = new RichEmbed()
+            .setTitle(`${fMessage('Available Emoji', BOLD)}`)
+            .setColor('#00CED1')
+            .setDescription(`Use an emoji with '[EMOJI]`)
+            .setTimestamp();
+        for (let emojiObj of result.rows) {
+            embed.addField(emojiObj.name, '');
+        }
+        return { embed };
     }
 
     // adds an emoji to the database. requires arguments in the form '<name> <url>'

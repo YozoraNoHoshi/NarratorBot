@@ -1,7 +1,7 @@
 import { HELP_RESPONSES } from '../responses';
 import CustomEmoji from './Emoji';
 import Misc from './Misc';
-import { MethodMap, BotCommand, DiscordEmbed, SendMsgEmbed } from '../types';
+import { MethodMap, BotCommand, SendMsgEmbed } from '../types';
 import { RichEmbed } from 'discord.js';
 import fMessage, { BOLD, ITALICS } from '../helpers/fMessage';
 import { BOT_PREFIX } from '../config';
@@ -46,7 +46,6 @@ class Bot {
 
     // Displays all available commands from the bot
     // Maybe should recursively display submenus as well...
-    // convert this to a message embed
     private static helpWanted(restofMessage: string, methodMap: MethodMap): SendMsgEmbed {
         let embed: any = new RichEmbed()
             .setTitle(`${fMessage('Available Commands', BOLD)}`)
