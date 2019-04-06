@@ -18,7 +18,6 @@ class PvP {
         let player2: any = message.mentions.users.filter((user: any) => user === client.user || !user.bot).first();
         if (!player2) throw createError('You must duel against someone!', 400);
         // Dueling the bot is rigged, player will always lose by the slimmest of margins... or get absolutely slaughtered.
-        // if (player2 === client.user) return PvP.duelBot();
 
         // Starting HP is specified in command or defaults to 30.
         let startHP: string = message.noPrefix.split(' ').find((val: any) => !isNaN(val)) || '30';
@@ -40,12 +39,18 @@ class PvP {
                 .setColor('#D2691E')
                 .setTimestamp(),
             0.5 < Math.random(),
+            player2 === client.user,
         );
 
         return { embed };
     }
 
-    private static duelRound(players: { player1: player; player2: player }, embed: any, p2Turn: boolean): DiscordEmbed {
+    private static duelRound(
+        players: { player1: player; player2: player },
+        embed: any,
+        p2Turn: boolean,
+        bot: boolean,
+    ): DiscordEmbed {
         // base case, prints result on the top
         if (players.player1.hp <= 0 || players.player2.hp <= 0 || embed.fields.length >= 24) {
             return embed.setDescription(
@@ -56,7 +61,7 @@ class PvP {
         let otherPlayer: player = p2Turn ? players.player1 : players.player2;
 
         // Calculations
-        let { action, damage } = PvP.action(otherPlayer.username, currPlayer === client.user);
+        let { action, damage } = PvP.action(otherPlayer.username, bot && p2Turn);
         otherPlayer.hp -= damage;
         let combatLog: string = `${action} for ${damage} damage.`;
 
@@ -69,7 +74,7 @@ class PvP {
                 `${PvP.deathMessage(otherPlayer.username)}. ${currPlayer.username}'s victory.`,
             );
         // Go again
-        return PvP.duelRound(players, embed, !p2Turn);
+        return PvP.duelRound(players, embed, !p2Turn, bot);
     }
 
     // Reduces disgusting interpolated strings everywhere
