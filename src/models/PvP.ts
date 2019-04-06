@@ -21,17 +21,18 @@ class PvP {
 
         // Starting HP is specified in command or defaults to 30.
         let startHP: string = message.noPrefix.split(' ').find((val: any) => !isNaN(val)) || '30';
+        let playerHP: number = Math.min(Number(startHP), 30);
         let title: string = `Duel between ${fMessage(player1.username, ITALICS)} and ${fMessage(
             player2.username,
             ITALICS,
         )}`;
         // Initial settings for the duel, randomizes who goes first
-        let embed = PvP.duelRound(
+        let embed: DiscordEmbed = PvP.duelRound(
             {
-                player1: { username: fMessage(player1.username, ITALICS), hp: +startHP },
+                player1: { username: fMessage(player1.username, ITALICS), hp: playerHP },
                 player2: {
                     username: fMessage(player2.username, ITALICS),
-                    hp: player2 === client.user ? 9999 : +startHP,
+                    hp: player2 === client.user ? 9999 : playerHP,
                 },
             },
             new RichEmbed()
