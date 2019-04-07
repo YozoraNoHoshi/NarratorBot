@@ -2,7 +2,7 @@ import discord = require('discord.js');
 import { TOKEN, BOT_PREFIX } from './config';
 import Bot from './models/Bot';
 import CustomEmoji from './models/Emoji';
-import { SendMsgEmbed } from './types';
+import { SendMsgEmbed, DiscordMessage } from './types';
 import client from './client';
 import MessageLog from './models/MessageLog';
 
@@ -13,7 +13,7 @@ client.on('ready', () => {
 
 client.on(
     'message',
-    async (message: any): Promise<string | void> => {
+    async (message: DiscordMessage): Promise<string | void> => {
         try {
             if (message.author.bot) return;
             if (message.guild) {
@@ -38,9 +38,10 @@ client.on(
     },
 );
 
-client.on('messageDelete', (message: any) => {
+client.on('messageDelete', (message: DiscordMessage) => {
     // add it to the messageLog class via method
     try {
+        // Ignores Bot messages and DMs
         if (!message.author.bot && message.guild) {
             MessageLog.addDeleted(message);
         }
