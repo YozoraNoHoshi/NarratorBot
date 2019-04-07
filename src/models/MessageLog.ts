@@ -10,13 +10,13 @@ class MessageLog {
 
     static addDeleted(message: DiscordMessage) {
         // Basically here to access the private messagelog
-        MessageLog._messageLog.push(message);
+        message.deleted && MessageLog._messageLog.push(message);
     }
 
-    static clearLog(toBeCleared: DiscordMessage[]): void {
+    static clearLog(toBeCleared: DiscordMessage[]): DiscordMessage[] {
         // Removes the messages in the params from the message log global
         let messageIds = new Set(toBeCleared.map(message => message.id));
-        MessageLog._messageLog = MessageLog._messageLog.filter(message => !messageIds.has(message.id));
+        return MessageLog._messageLog.filter(message => !messageIds.has(message.id));
     }
 
     static restoreMessages(message: DiscordMessage): SendMsgEmbed {
@@ -27,7 +27,7 @@ class MessageLog {
         );
         let toBeRestored: number = Math.min(log.length, 25);
         log = log.splice(0, toBeRestored);
-        MessageLog.clearLog(log);
+        MessageLog._messageLog = MessageLog.clearLog(log);
         let embed: DiscordEmbed = new RichEmbed()
             .setTitle('Message Log')
             .setDescription(`${toBeRestored} recently deleted messages`)

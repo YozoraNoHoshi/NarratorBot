@@ -6,7 +6,7 @@ import { SendMsgEmbed, DiscordEmbed, DiscordMessage } from '../types';
 
 // named as such so as to not cause confusion with Discord.js's emoji class
 class CustomEmoji {
-    // returns all the callable emojis for use with the [<emoji>] syntax
+    // returns all the callable emojis for use with the --emoji syntax
     static async getEmojiList(message: DiscordMessage): Promise<SendMsgEmbed> {
         let result: any = await db.query(`SELECT name FROM emojis`);
         let embed: DiscordEmbed = new RichEmbed()

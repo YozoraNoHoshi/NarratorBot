@@ -23,8 +23,8 @@ client.on(
                     let response: string | void | SendMsgEmbed = await Bot.commandCenter(message);
                     if (response) message.channel.send(response);
                 }
-                // emoji/image response, expects format '[emoji]'
-                else if (message.content.startsWith('[') && message.content.endsWith(']')) {
+                // emoji/image response, expects format '--emoji'
+                else if (message.content.startsWith('--')) {
                     let emoji: string = message.content.slice(1, -1);
                     let response: string | void = await CustomEmoji.emoji(emoji);
                     if (response) message.channel.send(new discord.Attachment(response));
