@@ -8,8 +8,20 @@ import randomInt from '../helpers/randomInt';
 
 class PvP {
     // Available pool of messages to draw from. Can be altered/added/deleted to whatever.
-    private static duelActions: string[] = ['smacks $1 on the head', 'throws a rock at $1'];
-    private static deathMessages: string[] = ['ran out of health and died'];
+    private static duelActions: string[] = [
+        'smacks $1 on the head',
+        'throws a rock at $1',
+        'slaps $1 in the face',
+        'pulls out a gun and shoots $1',
+        'uses OBLITERATE',
+    ];
+    private static deathMessages: string[] = [
+        'ran out of health and died',
+        'kicked the bucket',
+        'exploded',
+        'retired',
+        'lost his soul',
+    ];
 
     static duel(message: DiscordMessage): SendMsgEmbed {
         // initiates a duel between two users, the sender of the message + the first user mentioned in the message.
