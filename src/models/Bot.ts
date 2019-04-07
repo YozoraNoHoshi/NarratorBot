@@ -6,6 +6,7 @@ import { RichEmbed } from 'discord.js';
 import fMessage, { BOLD, ITALICS } from '../helpers/fMessage';
 import { BOT_PREFIX } from '../config';
 import PvP from './PvP';
+import MessageLog from './MessageLog';
 
 class Bot {
     // maps the triggering command to the method, or to a sub-MethodMap for nested menus
@@ -20,6 +21,7 @@ class Bot {
         delete: CustomEmoji.deleteEmoji,
         emoji: CustomEmoji.getEmojiList,
         duel: PvP.duel,
+        log: MessageLog.restoreMessages,
     };
 
     // This method allows for dynamic calling of other methods based on the incoming message.

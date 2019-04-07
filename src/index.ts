@@ -4,10 +4,11 @@ import Bot from './models/Bot';
 import CustomEmoji from './models/Emoji';
 import { SendMsgEmbed } from './types';
 import client from './client';
+import MessageLog from './models/MessageLog';
 
 client.on('ready', () => {
     console.log('Drain your glass!');
-    client.user.setActivity('Maki suffer.', { type: 'WATCHING' });
+    client.user.setActivity('the fluff.', { type: 'WATCHING' });
 });
 
 client.on(
@@ -36,5 +37,14 @@ client.on(
         }
     },
 );
+
+client.on('messageDelete', (message: any) => {
+    // add it to the messageLog class via method
+    try {
+        if (!message.author.bot && message.guild) {
+            MessageLog.addDeleted(message);
+        }
+    } catch (error) {}
+});
 
 client.login(TOKEN);
