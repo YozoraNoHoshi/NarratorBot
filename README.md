@@ -40,11 +40,12 @@ If the bot starts successfully, you should see
 
 in the console.
 
-###Planned Features
+### Planned Features
 ---
-* Honor duel with arbitrary health (basically a glorified game of war)
+* ~~Honor duel with arbitrary health (basically a glorified game of war)~~
 * Integration with pokesim backend to allow for Pokemon catches
 * Hit certain game APIs to retrieve data without having to login
 * Slap a user
-* Better formatting for messages
+* ~~Better formatting for messages~~
 * Some other fun minigames 
+* Other API calls
