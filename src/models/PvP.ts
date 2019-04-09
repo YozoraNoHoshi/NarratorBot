@@ -14,6 +14,8 @@ class PvP {
         'slaps $1 in the face',
         'pulls out a gun and shoots $1',
         'uses OBLITERATE',
+        'plays loud music',
+        'jumps in the air and does a somersault',
     ];
     private static deathMessages: string[] = [
         'ran out of health and died',
