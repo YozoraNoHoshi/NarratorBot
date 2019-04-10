@@ -1,5 +1,5 @@
 import discord = require('discord.js');
-import { TOKEN, BOT_PREFIX } from './config';
+import { TOKEN, BOT_PREFIX, EMOJI_PREFIX, EMOJI_SUFFIX } from './config';
 import Bot from './models/Bot';
 import CustomEmoji from './models/Emoji';
 import { SendMsgEmbed, DiscordMessage } from './types';
@@ -24,8 +24,9 @@ client.on(
                     if (response) message.channel.send(response);
                 }
                 // emoji/image response, expects format '--emoji'
-                else if (message.content.startsWith('--')) {
-                    let emoji: string = message.content.slice(1, -1);
+                else if (message.content.startsWith(EMOJI_PREFIX) && message.content.endsWith(EMOJI_SUFFIX)) {
+                    let end: number = -EMOJI_SUFFIX.length || message.content.length;
+                    let emoji: string = message.content.slice(EMOJI_PREFIX.length, end);
                     let response: string | void = await CustomEmoji.emoji(emoji);
                     if (response) message.channel.send(new discord.Attachment(response));
                 }

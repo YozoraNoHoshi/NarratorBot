@@ -30,10 +30,11 @@ export const FLIP_RESPONSES: string[] = ['Heads', 'Tails'];
 // responses for the !help command
 export const HELP_RESPONSES: helpShape = {
     help: 'You just called this command.',
-    emoji: 'Displays the list of all emojis in the store.',
-    add: 'Adds an emoji to the global emoji store, or updates the link if it exists. Syntax: <emoji name> <emoji link>',
-    delete: 'Deletes an emoji from the emoji store. Syntax: <emoji name>',
+    emoji: 'Opens the submenu for adding, deleting or showing all emojis.',
     flip: 'Flips a coin.',
+    duel: 'Initiates a duel against the first mentioned user. Users cannot be bots, except for me. Just try it.',
+    log: 'Displays recently deleted messages. I like being evil.',
+    anime: 'Opens the anime submenu.',
     '8': 'Asks the magic 8 ball a question. Questions must end in "?"',
     roll: 'Rolls a X sided die. Default 6. A second parameter can be added to specify the number of sides.',
 };
