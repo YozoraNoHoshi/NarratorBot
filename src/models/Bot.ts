@@ -27,11 +27,14 @@ class Bot {
     // This method allows for dynamic calling of other methods based on the incoming message.
     // Pass in your own method map to use a different set of commands, useful for nested menus
     static async commandCenter(
-        message: any,
+        message: DiscordMessage,
         methodMap: MethodMap = Bot.methodMap,
     ): Promise<string | void | SendMsgEmbed> {
         let messageParts: string[] = message.noPrefix.trim().split(' ');
-        let command = messageParts[0].toLowerCase();
+        let command: string = messageParts[0].toLowerCase();
+        if (command === 'help') {
+            return await Bot.helpWanted(message, methodMap);
+        }
         if (methodMap.hasOwnProperty(command)) {
             let action: BotCommand = methodMap[command];
             // let restOfMessage: string = messageParts.slice(1).join(' ');
@@ -39,9 +42,7 @@ class Bot {
             // Recursively calls command center for processing submenu actions.
             // NOTE - This really should be a type guard to check that it is of type MethodMap
             // if (action === Bot.helpWanted) {
-            if (command === 'help') {
-                return await Bot.helpWanted(message, methodMap);
-            } else if (typeof action !== 'function') {
+            if (typeof action !== 'function') {
                 return await Bot.commandCenter(message, action);
             }
             // >8 what is life? -> action('what is life?'), where action is the function from the methodMap
