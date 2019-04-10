@@ -1,14 +1,14 @@
 // Either a function or another MethodMap which indicates a submenu
-export type BotCommand = (arg0: DiscordMessage, arg1?: any) => any | MethodMap;
-
 export type MethodMap = { [name: string]: BotCommand };
-export type helpShape = {
-    [name: string]: string;
-};
+export type CommandFunction = (arg0: DiscordMessage, arg1?: any) => any;
+export type BotCommand = CommandFunction | MethodMap;
 export type SquaredMap = { [name: string]: MethodMap };
 export type player = { username: string; hp: number };
 export type SendMsgEmbed = { embed: DiscordEmbed };
 
+export type helpShape = {
+    [name: string]: string;
+};
 export type DiscordMessage = {
     attachments?: any;
     author?: any;
