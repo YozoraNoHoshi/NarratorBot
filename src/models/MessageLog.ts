@@ -7,6 +7,7 @@ class MessageLog {
      Restore messages only displays messages from the current channel,
      however, memory size could be a problem if lots of deleted messages */
     private static _messageLog: DiscordMessage[] = [];
+    // private static _messageLog: any = {ServerID: []};
 
     static addDeleted(message: DiscordMessage) {
         // Basically here to access the private messagelog

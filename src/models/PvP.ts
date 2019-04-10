@@ -68,9 +68,7 @@ class PvP {
     ): DiscordEmbed {
         // base case, prints result on the top
         if (players.player1.hp <= 0 || players.player2.hp <= 0 || embed.fields.length >= 24) {
-            return embed.setDescription(
-                `Result of Today's Battle: ${PvP.dispHP(players.player1)} - ${PvP.dispHP(players.player2)}`,
-            );
+            return embed.setDescription(`${PvP.dispHP(players.player1)} - ${PvP.dispHP(players.player2)}`);
         }
         let currPlayer: player = p2Turn ? players.player2 : players.player1;
         let otherPlayer: player = p2Turn ? players.player1 : players.player2;
@@ -85,9 +83,12 @@ class PvP {
         // If player dies, add a result field.
         if (otherPlayer.hp <= 0)
             embed.addField(
-                `${PvP.dispHP(otherPlayer)}`,
+                `Result of today's battle:`,
                 `${PvP.deathMessage(otherPlayer.username)}. ${currPlayer.username}'s victory.`,
             );
+        else if (embed.fields.length >= 24) {
+            embed.addField("Result of today's battle:", 'Draw');
+        }
         // Go again
         return PvP.duelRound(players, embed, !p2Turn, bot);
     }
@@ -100,7 +101,7 @@ class PvP {
     // Returns an arbitrary string and the damage it inflicted.
     private static action(name: string, bot: boolean): { action: string; damage: number } {
         // Damage formula will be improved later to a weighted roll
-        let damage = bot ? 9999 : randomInt(10);
+        let damage = bot ? randomInt(1000, 9999) : randomInt(10);
         let action = randomChoice(PvP.duelActions).replace('$1', name);
         return { action, damage };
     }
