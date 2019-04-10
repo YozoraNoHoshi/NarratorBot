@@ -3,7 +3,7 @@ import Misc from '../Misc';
 import fMessage, { BLOCK } from '../../helpers/fMessage';
 
 test('Bot flip', () => {
-    expect(Misc.flip()).toContain("Result of today's flip");
+    expect(Misc.flip()).toContain('flips a coin and...');
 });
 test('Bot 8ball', () => {
     let possibleResponses: string[] = EIGHT_BALL_RESPONSES.map(r => fMessage(r, BLOCK));

@@ -13,7 +13,7 @@ class Misc {
 
     // flips a two sided coin and returns the result
     static flip(): string {
-        return `Result of today's flip: ${fMessage(randomChoice(FLIP_RESPONSES), BOLD, ITALICS)}!`;
+        return `flips a coin and... ${fMessage(randomChoice(FLIP_RESPONSES), BOLD, ITALICS)}!`;
     }
 
     // rolls a virtual X sided die and returns the result. input must be positive and an actual number
