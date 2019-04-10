@@ -14,7 +14,7 @@ class MessageLog {
         message.deleted && MessageLog._messageLog.push(message);
     }
 
-    static clearLog(toBeCleared: DiscordMessage[]): DiscordMessage[] {
+    private static clearLog(toBeCleared: DiscordMessage[]): DiscordMessage[] {
         // Removes the messages in the params from the message log global
         let messageIds = new Set(toBeCleared.map(message => message.id));
         return MessageLog._messageLog.filter(message => !messageIds.has(message.id));

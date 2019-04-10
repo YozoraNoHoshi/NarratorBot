@@ -1,11 +1,14 @@
 import { EIGHT_BALL_RESPONSES } from '../../responses';
 import Misc from '../Misc';
+import fMessage, { BLOCK } from '../../helpers/fMessage';
 
 test('Bot flip', () => {
     expect(Misc.flip()).toContain("Result of today's flip");
 });
 test('Bot 8ball', () => {
-    expect(EIGHT_BALL_RESPONSES).toContain(Misc.eightBall({ noPrefix: 'What is life?' }));
+    let possibleResponses: string[] = EIGHT_BALL_RESPONSES.map(r => fMessage(r, BLOCK));
+    let response: string = Misc.eightBall({ noPrefix: 'What is life?' });
+    expect(possibleResponses).toContain(response);
     expect(Misc.eightBall({ noPrefix: `what is life` })).toBe("That doesn't look like a question.");
 });
 test('Bot die roll', () => {
