@@ -1,4 +1,4 @@
-import { DiscordMessage, DiscordEmbed, SendMsgEmbed, player } from '../types';
+import { DiscordMessage, DiscordEmbed, SendMsgEmbed, Player } from '../types';
 import createError from '../helpers/createError';
 import { RichEmbed } from 'discord.js';
 import fMessage, { BOLD, ITALICS } from '../helpers/fMessage';
@@ -61,7 +61,7 @@ class PvP {
     }
 
     private static duelRound(
-        players: { player1: player; player2: player },
+        players: { player1: Player; player2: Player },
         embed: any,
         p2Turn: boolean,
         bot: boolean,
@@ -70,8 +70,8 @@ class PvP {
         if (players.player1.hp <= 0 || players.player2.hp <= 0 || embed.fields.length >= 24) {
             return embed.setDescription(`${PvP.dispHP(players.player1)} - ${PvP.dispHP(players.player2)}`);
         }
-        let currPlayer: player = p2Turn ? players.player2 : players.player1;
-        let otherPlayer: player = p2Turn ? players.player1 : players.player2;
+        let currPlayer: Player = p2Turn ? players.player2 : players.player1;
+        let otherPlayer: Player = p2Turn ? players.player1 : players.player2;
 
         // Calculations
         let { action, damage } = PvP.action(otherPlayer.username, bot && p2Turn);

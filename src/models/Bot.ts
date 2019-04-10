@@ -52,7 +52,11 @@ class Bot {
 
     // Displays all available commands from the bot
     // Maybe should recursively display submenus as well...
-    private static helpWanted(message: DiscordMessage, methodMap: MethodMap): SendMsgEmbed {
+    private static helpWanted(
+        message: DiscordMessage,
+        methodMap: MethodMap,
+        responseMap: any = HELP_RESPONSES,
+    ): SendMsgEmbed {
         let embed: DiscordEmbed = new RichEmbed()
             .setTitle(`${fMessage('Available Commands', BOLD)}`)
             .setColor('#00CED1')
@@ -61,7 +65,11 @@ class Bot {
         let noDescription: string = 'No description provided.';
         for (let key in methodMap) {
             // Should not only be from the help_responses object, should be dynamic somehow
-            embed.addField(`${fMessage(key, BOLD)}`, fMessage(HELP_RESPONSES[key] || noDescription, ITALICS));
+            if (typeof responseMap[key] === 'string') {
+                embed.addField(`${fMessage(key, BOLD)}`, fMessage(responseMap[key] || noDescription, ITALICS));
+            } else {
+                embed.addField(`${fMessage(key, BOLD)}`, fMessage(`${key} has its own submenu`, ITALICS));
+            }
         }
         return { embed };
     }

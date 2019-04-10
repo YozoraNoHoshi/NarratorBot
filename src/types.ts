@@ -2,12 +2,12 @@
 export type MethodMap = { [name: string]: BotCommand };
 export type CommandFunction = (arg0: DiscordMessage, arg1?: any) => any;
 export type BotCommand = CommandFunction | MethodMap;
-export type SquaredMap = { [name: string]: MethodMap };
-export type player = { username: string; hp: number };
+
+export type Player = { username: string; hp: number };
 export type SendMsgEmbed = { embed: DiscordEmbed };
 
-export type helpShape = {
-    [name: string]: string;
+export type ResponseMap = {
+    [name: string]: string | ResponseMap;
 };
 export type DiscordMessage = {
     attachments?: any;

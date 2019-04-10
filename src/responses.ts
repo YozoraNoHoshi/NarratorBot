@@ -1,4 +1,4 @@
-import { helpShape } from './types';
+import { ResponseMap } from './types';
 
 // Magic 8 Ball responses
 export const EIGHT_BALL_RESPONSES: string[] = [
@@ -26,9 +26,8 @@ export const EIGHT_BALL_RESPONSES: string[] = [
 
 // Outcomes for flipping a coin
 export const FLIP_RESPONSES: string[] = ['Heads', 'Tails'];
-
 // responses for the !help command
-export const HELP_RESPONSES: helpShape = {
+export const HELP_RESPONSES: ResponseMap = {
     help: 'You just called this command.',
     emoji: 'Opens the submenu for adding, deleting or showing all emojis.',
     flip: 'Flips a coin.',
