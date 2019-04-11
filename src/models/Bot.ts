@@ -7,7 +7,7 @@ import CustomEmoji from './Emoji';
 import Misc from './Misc';
 import PvP from './PvP';
 import MessageLog from './MessageLog';
-import Anime from './Anime';
+// import Anime from './Anime';
 
 class Bot {
     // maps the triggering command to the method, or to a sub-MethodMap for nested menus
@@ -21,7 +21,7 @@ class Bot {
         duel: PvP.duel,
         log: MessageLog.restoreMessages,
         emoji: CustomEmoji.methodMap,
-        anime: Anime.methodMap,
+        // anime: Anime.methodMap,
     };
 
     // This method allows for dynamic calling of other methods based on the incoming message.
@@ -65,11 +65,9 @@ class Bot {
         let noDescription: string = 'No description provided.';
         for (let key in methodMap) {
             // Should not only be from the help_responses object, should be dynamic somehow
-            if (typeof responseMap[key] === 'string') {
-                embed.addField(`${fMessage(key, BOLD)}`, fMessage(responseMap[key] || noDescription, ITALICS));
-            } else {
-                embed.addField(`${fMessage(key, BOLD)}`, fMessage(`${key} has its own submenu`, ITALICS));
-            }
+            let desc: string =
+                typeof responseMap[key] === 'string' ? responseMap[key] || noDescription : `${key} has its own submenu`;
+            embed.addField(`${fMessage(key, BOLD)}`, fMessage(desc, ITALICS));
         }
         return { embed };
     }
