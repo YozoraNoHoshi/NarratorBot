@@ -2,11 +2,21 @@ import db from '../db';
 import createError from '../helpers/createError';
 import { RichEmbed } from 'discord.js';
 import fMessage, { BOLD } from '../helpers/fMessage';
-import { SendMsgEmbed, DiscordEmbed, DiscordMessage } from '../types';
+import { SendMsgEmbed, DiscordEmbed, DiscordMessage, MethodMap, ResponseMap } from '../types';
 
 // named as such so as to not cause confusion with Discord.js's emoji class
 class CustomEmoji {
-    static methodMap = { add: CustomEmoji.addEmoji, list: CustomEmoji.getEmojiList, delete: CustomEmoji.deleteEmoji };
+    static responseMap: ResponseMap = {
+        add: 'Adds an emoji to the store.',
+        list: 'Shows the list of emojis.',
+        delete: 'Deletes an emoji from the store.',
+    };
+    static methodMap: MethodMap = {
+        help: CustomEmoji.responseMap,
+        add: CustomEmoji.addEmoji,
+        list: CustomEmoji.getEmojiList,
+        delete: CustomEmoji.deleteEmoji,
+    };
 
     // returns all the callable emojis for use with the --emoji syntax
     static async getEmojiList(message: DiscordMessage): Promise<SendMsgEmbed> {

@@ -1,4 +1,4 @@
-import { MethodMap, DiscordMessage, SendMsgEmbed } from '../types';
+import { MethodMap, DiscordMessage, SendMsgEmbed, ResponseMap } from '../types';
 import { RichEmbed } from 'discord.js';
 // import axios from 'axios'
 
@@ -11,9 +11,14 @@ Uses GraphQL.
 // https://anilist.gitbook.io/anilist-apiv2-docs/overview/overview
 
 class Anime {
+    static responseMap: ResponseMap = {
+        season: 'Contains filler description.',
+    };
     static methodMap: MethodMap = {
+        help: Anime.responseMap,
         season: Anime.season,
     };
+
     private static BASE_URL: string = 'https://graphql.anilist.co';
 
     private static async season(message: DiscordMessage): Promise<SendMsgEmbed> {
