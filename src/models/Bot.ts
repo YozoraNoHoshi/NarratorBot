@@ -1,19 +1,27 @@
 import { RichEmbed } from 'discord.js';
-import { MethodMap, BotCommand, SendMsgEmbed, DiscordEmbed, DiscordMessage } from '../types';
-import { HELP_RESPONSES } from '../responses';
+import { MethodMap, BotCommand, SendMsgEmbed, DiscordEmbed, DiscordMessage, ResponseMap } from '../types';
+// import { HELP_RESPONSES } from '../responses';
 import fMessage, { BOLD, ITALICS } from '../helpers/fMessage';
 import { BOT_PREFIX } from '../config';
 import CustomEmoji from './Emoji';
 import Misc from './Misc';
 import PvP from './PvP';
 import MessageLog from './MessageLog';
-// import Anime from './Anime';
+import Anime from './Anime';
 
 class Bot {
+    private static responseMap: ResponseMap = {
+        flip: 'Flips a coin.',
+        roll: 'Rolls a X sided die. Default 6. A second parameter can be added to specify the number of sides.',
+        '8': 'Asks the magic 8 ball a question. Questions must end in "?"',
+        duel: 'Initiates a duel against the first mentioned user. Users cannot be bots, except for me. Just try it.',
+        log: 'Displays recently deleted messages. I like being evil.',
+    };
+
     // maps the triggering command to the method, or to a sub-MethodMap for nested menus
     // commands are in the form <Prefix>[key]
     private static methodMap: MethodMap = {
-        // help: Bot.helpWanted,
+        help: Bot.responseMap,
         flip: Misc.flip,
         roll: Misc.dieRoll,
         '8': Misc.eightBall,
@@ -21,7 +29,7 @@ class Bot {
         duel: PvP.duel,
         log: MessageLog.restoreMessages,
         emoji: CustomEmoji.methodMap,
-        // anime: Anime.methodMap,
+        anime: Anime.methodMap,
     };
 
     // This method allows for dynamic calling of other methods based on the incoming message.
@@ -33,10 +41,11 @@ class Bot {
         let messageParts: string[] = message.noPrefix.trim().split(' ');
         let command: string = messageParts[0].toLowerCase();
         if (command === 'help') {
-            return await Bot.helpWanted(message, methodMap);
+            return await Bot.helpWanted(message, methodMap, methodMap.help);
         }
         if (methodMap.hasOwnProperty(command)) {
-            let action: BotCommand = methodMap[command];
+            // Action is of type BotCommand. Any is there for the case where "help" is triggered, which is handled above.
+            let action: BotCommand | any = methodMap[command];
             // let restOfMessage: string = messageParts.slice(1).join(' ');
             message.noPrefix = messageParts.slice(1).join(' ');
             // Recursively calls command center for processing submenu actions.
@@ -45,7 +54,7 @@ class Bot {
             if (typeof action !== 'function') {
                 return await Bot.commandCenter(message, action);
             }
-            // >8 what is life? -> action('what is life?'), where action is the function from the methodMap
+            // >8 what is life? -> action({noPrefix: 'what is life?'}), where action is the function from the methodMap
             return await action(message);
         } else return;
     }
@@ -55,7 +64,7 @@ class Bot {
     private static helpWanted(
         message: DiscordMessage,
         methodMap: MethodMap,
-        responseMap: any = HELP_RESPONSES,
+        responseMap: any = Bot.responseMap,
     ): SendMsgEmbed {
         let embed: DiscordEmbed = new RichEmbed()
             .setTitle(`${fMessage('Available Commands', BOLD)}`)
@@ -65,9 +74,13 @@ class Bot {
         let noDescription: string = 'No description provided.';
         for (let key in methodMap) {
             // Should not only be from the help_responses object, should be dynamic somehow
-            let desc: string =
-                typeof responseMap[key] === 'string' ? responseMap[key] || noDescription : `${key} has its own submenu`;
-            embed.addField(`${fMessage(key, BOLD)}`, fMessage(desc, ITALICS));
+            if (key !== 'help') {
+                let desc: string =
+                    typeof responseMap[key] === 'string'
+                        ? responseMap[key] || noDescription
+                        : `${key} has its own submenu`;
+                embed.addField(`${fMessage(key, BOLD)}`, fMessage(desc, ITALICS));
+            }
         }
         return { embed };
     }
