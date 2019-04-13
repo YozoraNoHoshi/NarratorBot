@@ -16,6 +16,7 @@
     "license": "ISC",
     "dependencies": {
         "@types/pg": "^7.4.14",
+        "axios": "^0.18.0",
         "discord.js": "^11.4.2",
         "dotenv": "^7.0.0",
         "pg": "^7.9.0"
