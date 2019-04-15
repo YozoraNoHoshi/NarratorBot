@@ -23,16 +23,27 @@ class Anime {
 
     private static BASE_URL: string = 'https://graphql.anilist.co';
 
-    static async season(message: DiscordMessage): Promise<SendMsgEmbed> {
-        let { season, year } = Anime.getSeasonTags(message.noPrefix);
-        let result = await Anime.requestToAniList(getBySeason, { season, year });
+    static async season(message: DiscordMessage, page: number = 1): Promise<SendMsgEmbed> {
+        let variables = Anime.getSeasonTags(message.noPrefix, page);
+        let result = await Anime.requestToAniList(getBySeason, variables);
+        let { pageInfo, media } = result.Page;
         // format by page, reactions will be needed most likely
-        let embed = new RichEmbed();
+        let embed = new RichEmbed()
+            .setTitle(`Anime for ${variables.season} ${variables.year}`)
+            .setAuthor(message.author)
+            .setFooter(`Page ${pageInfo.currentPage} of ${pageInfo.lastPage}`)
+            .setTimestamp();
+        for (let anime of media) {
+            embed.addField(
+                `${anime.title.romaji} (${anime.title.english})`,
+                `${anime.format} - ${anime.status}\nGenres: ${anime.genres.join(', ')}\nEpisodes: ${anime.episodes}`,
+            );
+        }
         return { embed };
     }
 
-    private static async requestToAniList(query: string, variables: object): Promise<object> {
-        // Even though bot has global error handler, we want to reformat the error nicely.
+    private static async requestToAniList(query: string, variables: object): Promise<any> {
+        // Even though bot has global error handler, I want to separate out request errors and api errors.
         try {
             let result: AxiosResponse<any> = await axios.post(Anime.BASE_URL, { query, variables }, Anime.options);
             return result.data.data ? result.data.data : result.data.errors;
@@ -43,14 +54,13 @@ class Anime {
         }
     }
 
-    private static getSeasonTags(seasons: string): { season: string; year: number } {
+    private static getSeasonTags(seasons: string, page: number = 1): { season: string; year: number; page: number } {
         let date = new Date(seasons);
         let season: string = ['WINTER', 'SPRING', 'SUMMER', 'FALL'][Math.floor(date.getMonth() / 4)];
-        return { season, year: date.getFullYear() };
+        return { season, year: date.getFullYear(), page };
     }
 
     private static options = {
-        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
