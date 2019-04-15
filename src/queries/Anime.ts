@@ -1,18 +1,17 @@
-export const getBySeason: string = `query ($season: MediaSeason, $seasonYear: Int, $page: Int)  {
-  Page (perPage: 25, page: $page) {
-    pageInfo{
+export const getBySeason: string = `query ($season: MediaSeason, $seasonYear: Int, $page: Int) {
+  Page(perPage: 25, page: $page) {
+    pageInfo {
       total
       currentPage
       lastPage
-      hasNextPage
       perPage
     }
-    media(season: $season, seasonYear: $seasonYear, type: ANIME) {
+    media(season: $season, seasonYear: $seasonYear, format_in: [TV, MOVIE], type: ANIME) {
       title {
         romaji
-        native
         english
       }
+      format
       genres
       episodes
       status
