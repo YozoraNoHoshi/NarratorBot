@@ -14,7 +14,7 @@ client.on('ready', () => {
 
 client.on(
     'message',
-    async (message: Message & PrefMessage): Promise<string | void> => {
+    async (message: Message & PrefMessage): Promise<void> => {
         try {
             if (message.author === client.user) {
                 // If message received is from this user and has a reaction from this user, activate the reaction await
