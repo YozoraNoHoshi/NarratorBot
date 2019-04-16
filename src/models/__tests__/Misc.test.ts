@@ -1,7 +1,7 @@
 import { EIGHT_BALL_RESPONSES } from '../../responses';
 import Misc from '../Misc';
 import fMessage, { BLOCK } from '../../helpers/fMessage';
-import { returnTestCase } from './testHelpers';
+import { returnTestCase } from '../../helpers/testHelpers';
 
 test('Bot flip', () => {
     expect(Misc.flip()).toContain('flips a coin and...');

@@ -1,7 +1,7 @@
 import Emoji from '../Emoji';
 import db from '../../db';
 import createError from '../../helpers/createError';
-import { returnTestCase } from './testHelpers';
+import { returnTestCase } from '../../helpers/testHelpers';
 
 beforeAll(async () => {
     await db.query('DROP TABLE emojis');
