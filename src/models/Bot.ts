@@ -39,27 +39,24 @@ class Bot {
     ): Promise<string | void | SendMsgEmbed> {
         let messageParts: string[] = message.noPrefix.trim().split(' ');
         let command: string = messageParts[0].toLowerCase();
+        // console.log('command:', command)
         if (command === 'help') {
             return await Bot.helpWanted(message, methodMap, methodMap.help);
         }
         if (methodMap.hasOwnProperty(command)) {
             // Action is of type BotCommand. Any is there for the case where "help" is triggered, which is handled above.
             let action: BotCommand | any = methodMap[command];
-            // let restOfMessage: string = messageParts.slice(1).join(' ');
             message.noPrefix = messageParts.slice(1).join(' ');
             // Recursively calls command center for processing submenu actions.
             // NOTE - This really should be a type guard to check that it is of type MethodMap
-            // if (action === Bot.helpWanted) {
             if (typeof action !== 'function') {
                 return await Bot.commandCenter(message, action);
             }
-            // >8 what is life? -> action({noPrefix: 'what is life?'}), where action is the function from the methodMap
             return await action(message);
         } else return;
     }
 
-    // Displays all available commands from the bot
-    // Maybe should recursively display submenus as well...
+    // Displays all available commands from the bot for the current submenu
     private static helpWanted(
         message: PrefixedMessage,
         methodMap: MethodMap,
@@ -72,7 +69,6 @@ class Bot {
             .setTimestamp();
         let noDescription: string = 'No description provided.';
         for (let key in methodMap) {
-            // Should not only be from the help_responses object, should be dynamic somehow
             if (key !== 'help') {
                 let desc: string =
                     typeof responseMap[key] === 'string'
