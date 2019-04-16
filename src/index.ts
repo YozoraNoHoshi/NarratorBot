@@ -1,6 +1,6 @@
 // import discord = require('discord.js');
 import { TOKEN, BOT_PREFIX, EMOJI_PREFIX, EMOJI_SUFFIX } from './config';
-import { SendMsgEmbed, DiscordMessage, PrefMessage, DeletedMessage } from './types';
+import { PrefMessage, SendMsgEmbed } from './types';
 import Bot from './models/Bot';
 import CustomEmoji from './models/Emoji';
 import client from './client';
@@ -14,8 +14,7 @@ client.on('ready', () => {
 
 client.on(
     'message',
-    // async (message: Message & PrefMessage): Promise<string | void> => {
-    async (message: DiscordMessage): Promise<string | void> => {
+    async (message: Message & PrefMessage): Promise<string | void> => {
         try {
             if (message.author === client.user) {
                 // If message received is from this user and has a reaction from this user, activate the reaction await
@@ -49,7 +48,7 @@ client.on(
 );
 
 // client.on('messageDelete', (message: Message & DeletedMessage) => {
-client.on('messageDelete', (message: any) => {
+client.on('messageDelete', (message: Message) => {
     // add it to the messageLog class via method
     try {
         // Ignores Bot messages and DMs

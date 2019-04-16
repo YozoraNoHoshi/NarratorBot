@@ -1,7 +1,9 @@
 import Bot from '../Bot';
+import { Message } from 'discord.js';
 
 test('Bot help', async () => {
-    let helpResponse: any = await Bot.commandCenter({ noPrefix: `help` });
+    let message: any = { noPrefix: `help` };
+    let helpResponse: any = await Bot.commandCenter(message);
     expect(helpResponse).toHaveProperty('embed');
     expect(helpResponse.embed).toHaveProperty('title', '**Available Commands**');
     expect(helpResponse.embed).toHaveProperty('color');

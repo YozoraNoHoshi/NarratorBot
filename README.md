@@ -34,6 +34,14 @@ Add the bot to your discord server using this url:
 
 Replace the `client_id` with your bot's `client_id`.
 
+### Note: If TypeScript is throwing an error about Message missing a 'deleted' key, you will have to add the deleted key into the message type manually.
+
+
+Go into `node_modules/discord.js/typings/index.d.ts`
+and add into the Message type:
+>public deleted: boolean;
+
+
 **Start the bot with  `npm start`**     
 If the bot starts successfully, you should see 
 >Drain your glass!   

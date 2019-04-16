@@ -1,6 +1,5 @@
 import { RichEmbed } from 'discord.js';
-import { MethodMap, BotCommand, SendMsgEmbed, DiscordEmbed, DiscordMessage, ResponseMap } from '../types';
-// import { HELP_RESPONSES } from '../responses';
+import { MethodMap, BotCommand, SendMsgEmbed, ResponseMap, PrefixedMessage } from '../types';
 import fMessage, { BOLD, ITALICS } from '../helpers/fMessage';
 import { BOT_PREFIX } from '../config';
 import CustomEmoji from './Emoji';
@@ -35,7 +34,7 @@ class Bot {
     // This method allows for dynamic calling of other methods based on the incoming message.
     // Pass in your own method map to use a different set of commands, useful for nested menus
     static async commandCenter(
-        message: DiscordMessage,
+        message: PrefixedMessage,
         methodMap: MethodMap = Bot.methodMap,
     ): Promise<string | void | SendMsgEmbed> {
         let messageParts: string[] = message.noPrefix.trim().split(' ');
@@ -62,11 +61,11 @@ class Bot {
     // Displays all available commands from the bot
     // Maybe should recursively display submenus as well...
     private static helpWanted(
-        message: DiscordMessage,
+        message: PrefixedMessage,
         methodMap: MethodMap,
         responseMap: any = Bot.responseMap,
     ): SendMsgEmbed {
-        let embed: DiscordEmbed = new RichEmbed()
+        let embed: RichEmbed = new RichEmbed()
             .setTitle(`${fMessage('Available Commands', BOLD)}`)
             .setColor('#00CED1')
             .setDescription(`Commands should be prefixed with '${BOT_PREFIX}'`)

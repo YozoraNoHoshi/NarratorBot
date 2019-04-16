@@ -1,12 +1,11 @@
 import { EIGHT_BALL_RESPONSES, FLIP_RESPONSES } from '../responses';
 import randomChoice from '../helpers/randomChoice';
 import fMessage, { BOLD, ITALICS, BLOCK } from '../helpers/fMessage';
-import { DiscordMessage } from '../types';
-import createError from '../helpers/createError';
+import { PrefixedMessage } from '../types';
 
 class Misc {
     // returns the 8 ball response for the question
-    static eightBall(message: DiscordMessage): string {
+    static eightBall(message: PrefixedMessage): string {
         if (!message.noPrefix.endsWith('?')) return "That doesn't look like a question.";
         return fMessage(randomChoice(EIGHT_BALL_RESPONSES), BLOCK);
     }
@@ -17,7 +16,7 @@ class Misc {
     }
 
     // rolls a virtual X sided die and returns the result. input must be positive and an actual number
-    static dieRoll(message: DiscordMessage): string {
+    static dieRoll(message: PrefixedMessage): string {
         if (message.noPrefix.toLowerCase().includes('infinity')) return 'No.';
         let input: number = Number(message.noPrefix) || 6;
         if (input < 0) return `Maybe try something higher than ${input}?`;

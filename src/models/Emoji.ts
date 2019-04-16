@@ -2,7 +2,7 @@ import db from '../db';
 import createError from '../helpers/createError';
 import { RichEmbed } from 'discord.js';
 import fMessage, { BOLD } from '../helpers/fMessage';
-import { SendMsgEmbed, DiscordEmbed, DiscordMessage, MethodMap, ResponseMap } from '../types';
+import { SendMsgEmbed, MethodMap, ResponseMap, PrefixedMessage } from '../types';
 
 // named as such so as to not cause confusion with Discord.js's emoji class
 class CustomEmoji {
@@ -19,9 +19,9 @@ class CustomEmoji {
     };
 
     // returns all the callable emojis for use with the --emoji syntax
-    static async getEmojiList(message: DiscordMessage): Promise<SendMsgEmbed> {
+    static async getEmojiList(message: PrefixedMessage): Promise<SendMsgEmbed> {
         let result: any = await db.query(`SELECT name FROM emojis`);
-        let embed: DiscordEmbed = new RichEmbed()
+        let embed: RichEmbed = new RichEmbed()
             .setTitle(`${fMessage('Available Emoji', BOLD)}`)
             .setColor('#00CED1')
             .setDescription(`Use an emoji with '[EMOJI]`)
@@ -33,7 +33,7 @@ class CustomEmoji {
     }
 
     // adds an emoji to the database. requires arguments in the form '<name> <url>'
-    static async addEmoji(message: DiscordMessage): Promise<string | void> {
+    static async addEmoji(message: PrefixedMessage): Promise<string | void> {
         let newEmoji: string[] = message.noPrefix.split(' ');
         let result: { rows: object[] } = await db.query(`SELECT name, image FROM emojis WHERE name = $1`, [
             newEmoji[0],
@@ -56,7 +56,7 @@ class CustomEmoji {
     }
 
     // deletes an emoji from the database. requires the name of the emoji
-    static async deleteEmoji(message: DiscordMessage): Promise<string> {
+    static async deleteEmoji(message: PrefixedMessage): Promise<string> {
         let result: any = await db.query(`DELETE FROM emojis WHERE name = $1 RETURNING name`, [message.noPrefix]);
         if (result.rows[0]) return `\`Deleted emoji ${result.rows[0].name}\``;
         throw createError(`Could not find emoji named ${message.noPrefix}.`, 404);

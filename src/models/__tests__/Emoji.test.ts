@@ -1,6 +1,7 @@
 import Emoji from '../Emoji';
 import db from '../../db';
 import createError from '../../helpers/createError';
+import { returnTestCase } from './testHelpers';
 
 beforeAll(async () => {
     await db.query('DROP TABLE emojis');
@@ -35,9 +36,9 @@ test('it should return an emoji url', async () => {
 });
 
 test('it should add an emoji', async () => {
-    let result = await Emoji.addEmoji({
-        noPrefix: 'blobstare https://cdn.discordapp.com/emojis/562515153661198404.png',
-    });
+    let result = await Emoji.addEmoji(
+        returnTestCase('blobstare https://cdn.discordapp.com/emojis/562515153661198404.png'),
+    );
     expect(result).toBe('`Added the blobstare emoji.`');
     let query = await db.query(`SELECT * FROM emojis WHERE name = $1`, ['blobstare']);
     expect(query.rows).toHaveProperty('length', 1);
@@ -48,12 +49,10 @@ test('it should add an emoji', async () => {
 });
 
 test('it should update an existing emoji link', async () => {
-    await Emoji.addEmoji({
-        noPrefix: 'blobstare https://cdn.discordapp.com/emojis/562515153661198404.png',
-    });
-    let result = await Emoji.addEmoji({
-        noPrefix: 'blobstare https://cdn.discordapp.com/emojis/325854864888299533.png',
-    });
+    await Emoji.addEmoji(returnTestCase('blobstare https://cdn.discordapp.com/emojis/562515153661198404.png'));
+    let result = await Emoji.addEmoji(
+        returnTestCase('blobstare https://cdn.discordapp.com/emojis/325854864888299533.png'),
+    );
     expect(result).toBe('`Updated the blobstare emoji.`');
     let query = await db.query(`SELECT * FROM emojis WHERE name = $1`, ['blobstare']);
     expect(query.rows).toHaveProperty('length', 1);
@@ -64,7 +63,7 @@ test('it should update an existing emoji link', async () => {
 });
 
 test('it should delete an emoji', async () => {
-    let result = await Emoji.deleteEmoji({ noPrefix: 'blobderpy' });
+    let result = await Emoji.deleteEmoji(returnTestCase('blobderpy'));
     expect(result).toBe(`\`Deleted emoji blobderpy\``);
     let query = await db.query('SELECT * FROM emojis');
     expect(query.rows).toHaveProperty('length', 0);
@@ -73,7 +72,7 @@ test('it should delete an emoji', async () => {
 test('it should throw an error deleting an emoji that doesnt exist', async () => {
     let error;
     try {
-        await Emoji.deleteEmoji({ noPrefix: 'blobcry' });
+        await Emoji.deleteEmoji(returnTestCase('blobcry'));
     } catch (e) {
         error = e;
     }

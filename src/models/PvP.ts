@@ -1,4 +1,4 @@
-import { DiscordMessage, DiscordEmbed, SendMsgEmbed, Player } from '../types';
+import { SendMsgEmbed, Player, PrefixedMessage } from '../types';
 import createError from '../helpers/createError';
 import { RichEmbed } from 'discord.js';
 import fMessage, { BOLD, ITALICS } from '../helpers/fMessage';
@@ -25,7 +25,7 @@ class PvP {
         'lost his soul',
     ];
 
-    static duel(message: DiscordMessage): SendMsgEmbed {
+    static duel(message: PrefixedMessage): SendMsgEmbed {
         // initiates a duel between two users, the sender of the message + the first user mentioned in the message.
         let player1: any = message.author;
         // Cannot duel bots except this one.
@@ -41,7 +41,7 @@ class PvP {
             ITALICS,
         )}`;
         // Initial settings for the duel, randomizes who goes first
-        let embed: DiscordEmbed = PvP.duelRound(
+        let embed: RichEmbed = PvP.duelRound(
             {
                 player1: { username: fMessage(player1.username, ITALICS), hp: playerHP },
                 player2: {
@@ -65,7 +65,7 @@ class PvP {
         embed: any,
         p2Turn: boolean,
         bot: boolean,
-    ): DiscordEmbed {
+    ): RichEmbed {
         // base case, prints result on the top
         if (players.player1.hp <= 0 || players.player2.hp <= 0 || embed.fields.length >= 24) {
             return embed.setDescription(`${PvP.dispHP(players.player1)} - ${PvP.dispHP(players.player2)}`);

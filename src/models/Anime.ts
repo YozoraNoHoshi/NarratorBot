@@ -1,4 +1,4 @@
-import { MethodMap, DiscordMessage, SendMsgEmbed, ResponseMap } from '../types';
+import { MethodMap, SendMsgEmbed, ResponseMap, PrefixedMessage } from '../types';
 import { RichEmbed } from 'discord.js';
 import axios, { AxiosResponse } from 'axios';
 import { getByAiring, getBySeason } from '../queries/Anime';
@@ -24,7 +24,7 @@ class Anime {
     private static BASE_URL: string = 'https://graphql.anilist.co';
     private static BASE_URL_ANIME: string = 'https://anilist.co/anime';
 
-    static async season(message: DiscordMessage, page?: number): Promise<SendMsgEmbed> {
+    static async season(message: PrefixedMessage, page?: number): Promise<SendMsgEmbed> {
         if (!page) page = 1;
         let variables = Anime.getSeasonTags(message.noPrefix, page);
         let result = await Anime.requestToAniList(getBySeason, variables);
