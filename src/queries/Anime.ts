@@ -11,6 +11,7 @@ export const getBySeason: string = `query ($season: MediaSeason, $seasonYear: In
         romaji
         english
       }
+      id
       format
       genres
       episodes

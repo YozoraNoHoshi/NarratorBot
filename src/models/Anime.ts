@@ -22,6 +22,7 @@ class Anime {
     };
 
     private static BASE_URL: string = 'https://graphql.anilist.co';
+    private static BASE_URL_ANIME: string = 'https://anilist.co/anime';
 
     static async season(message: DiscordMessage, page: number = 1): Promise<SendMsgEmbed> {
         let variables = Anime.getSeasonTags(message.noPrefix, page);
@@ -29,15 +30,16 @@ class Anime {
         let { pageInfo, media } = result.Page;
         // format by page, reactions will be needed most likely
         let embed = new RichEmbed()
-            .setTitle(`Anime for ${variables.season} ${variables.year}`)
-            .setAuthor(message.author)
+            .setTitle(`Anime for ${variables.season} ${variables.seasonYear}`)
             .setFooter(`Page ${pageInfo.currentPage} of ${pageInfo.lastPage}`)
             .setTimestamp();
         for (let anime of media) {
-            embed.addField(
-                `${anime.title.romaji} (${anime.title.english})`,
-                `${anime.format} - ${anime.status}\nGenres: ${anime.genres.join(', ')}\nEpisodes: ${anime.episodes}`,
-            );
+            let enTitle: string | null = anime.title.english !== null ? `(${anime.title.english}) -` : '-';
+            let title: string = `${anime.title.romaji} ${enTitle} ${anime.format}`;
+            let desc: string = `Genres: ${anime.genres.join(', ')}\nEpisodes: ${anime.episodes}\nStatus: ${
+                anime.status
+            }\n${Anime.BASE_URL_ANIME}/${anime.id}`;
+            embed.addField(title, desc);
         }
         return { embed };
     }
@@ -54,10 +56,13 @@ class Anime {
         }
     }
 
-    private static getSeasonTags(seasons: string, page: number = 1): { season: string; year: number; page: number } {
+    private static getSeasonTags(
+        seasons: string,
+        page: number = 1,
+    ): { season: string; seasonYear: number; page: number } {
         let date = new Date(seasons);
         let season: string = ['WINTER', 'SPRING', 'SUMMER', 'FALL'][Math.floor(date.getMonth() / 4)];
-        return { season, year: date.getFullYear(), page };
+        return { season, seasonYear: date.getFullYear(), page };
     }
 
     private static options = {
