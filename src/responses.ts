@@ -1,5 +1,3 @@
-import { ResponseMap } from './types';
-
 // Magic 8 Ball responses
 export const EIGHT_BALL_RESPONSES: string[] = [
     'It is certain.',

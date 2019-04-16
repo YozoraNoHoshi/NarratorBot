@@ -7,6 +7,8 @@ export type BotCommand = CommandFunction | MethodMap | ResponseMap;
 export type Player = { username: string; hp: number };
 
 export type SendMsgEmbed = { embed: DiscordEmbed };
+export type DeletedMessage = { deleted?: boolean };
+export type PrefMessage = { noPrefix: string };
 export type DiscordMessage = {
     attachments?: any;
     author?: any;
