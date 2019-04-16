@@ -24,7 +24,8 @@ class Anime {
     private static BASE_URL: string = 'https://graphql.anilist.co';
     private static BASE_URL_ANIME: string = 'https://anilist.co/anime';
 
-    static async season(message: DiscordMessage, page: number = 1): Promise<SendMsgEmbed> {
+    static async season(message: DiscordMessage, page?: number): Promise<SendMsgEmbed> {
+        if (!page) page = 1;
         let variables = Anime.getSeasonTags(message.noPrefix, page);
         let result = await Anime.requestToAniList(getBySeason, variables);
         let { pageInfo, media } = result.Page;
