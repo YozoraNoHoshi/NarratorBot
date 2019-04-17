@@ -20,6 +20,41 @@ export const getBySeason: string = `query ($season: MediaSeason, $seasonYear: In
   }
 }`;
 
+export const searchAnime: string = `query ($search: String) {
+  Media(search: $search, type: ANIME, sort: SEARCH_MATCH) {
+    title {
+      romaji
+      english
+    }
+    id
+    coverImage {
+      large
+    }
+    format
+    genres
+    tags {
+      name
+    }
+    source
+    season
+    startDate {
+      year
+      month
+      day
+    }
+    episodes
+    duration
+    status
+    description
+    studios (isMain:true) {
+      nodes{
+        name
+      }
+    }
+  }
+}
+`;
+
 export const getByAiring: string = `query ($notYetAired: Boolean, $episode: Int, $page: Int) {
   Page (perPage: 25, page: $page) {
     pageInfo {

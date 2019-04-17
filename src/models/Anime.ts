@@ -1,7 +1,7 @@
 import { MethodMap, SendMsgEmbed, ResponseMap, PrefixedMessage } from '../types';
 import { RichEmbed } from 'discord.js';
 import axios, { AxiosResponse } from 'axios';
-import { getByAiring, getBySeason } from '../queries/Anime';
+import { getByAiring, getBySeason, searchAnime } from '../queries/Anime';
 import createError from '../helpers/createError';
 
 /* 
@@ -19,16 +19,21 @@ class Anime {
     static methodMap: MethodMap = {
         help: Anime.responseMap,
         season: Anime.season,
+        search: Anime.search,
     };
 
     private static BASE_URL: string = 'https://graphql.anilist.co';
     private static BASE_URL_ANIME: string = 'https://anilist.co/anime';
+    private static ANILIST_LOGO: string = 'https://anilist.co/img/icons/icon.svg';
 
     static async season(message: PrefixedMessage): Promise<SendMsgEmbed> {
         let extract: string[] = message.noPrefix.split(' --page ');
         let page: number = Number(extract[1]) || 1;
         let variables = Anime.getSeasonTags(extract[0], page);
         let result = await Anime.requestToAniList(getBySeason, variables);
+        // Successful Request is an object, failed request is Array
+        if (Array.isArray(result)) throw createError(result[0].message, result[0].status);
+
         let { pageInfo, media } = result.Page;
         // format by page, reactions will be needed most likely
         let embed = new RichEmbed()
@@ -36,8 +41,7 @@ class Anime {
             .setFooter(`Page ${pageInfo.currentPage} of ${pageInfo.lastPage}`)
             .setTimestamp();
         for (let anime of media) {
-            let enTitle: string | null = anime.title.english !== null ? `(${anime.title.english}) -` : '-';
-            let title: string = `${anime.title.romaji} ${enTitle} ${anime.format}`;
+            let title: string = Anime.formatTitle(anime.title, anime.format);
             let desc: string = `Genres: ${anime.genres.join(', ')}\nEpisodes: ${anime.episodes}\nStatus: ${
                 anime.status
             }\n${Anime.BASE_URL_ANIME}/${anime.id}`;
@@ -46,11 +50,36 @@ class Anime {
         return { embed };
     }
 
+    static async search(message: PrefixedMessage): Promise<SendMsgEmbed> {
+        let result = await Anime.requestToAniList(searchAnime, { search: message.noPrefix });
+        // Successful Request is an object, failed request is Array
+        if (Array.isArray(result)) throw createError(result[0].message, result[0].status);
+
+        let anime: any = result.Media;
+        let airDate = new Date(anime.startDate.year, anime.startDate.month - 1, anime.startDate.day);
+        let embed = new RichEmbed()
+            .setAuthor(anime.studios.nodes[0].name)
+            .setTitle(Anime.formatTitle(anime.title, anime.format))
+            .setDescription(anime.description)
+            .setThumbnail(Anime.ANILIST_LOGO)
+            .setFooter(`${Anime.BASE_URL_ANIME}/${anime.id}`)
+            .setTimestamp()
+            .setImage(anime.coverImage.large)
+            .addField('Source', anime.source)
+            .addField('Air Date', `${airDate.toDateString()} - ${anime.season}`)
+            .addField('Episodes', `${anime.episodes} (${anime.duration} min each)`)
+            .addField('Status', anime.status)
+            .addField('Tags', anime.tags.join(', '))
+            .addField('Genres', anime.genres.join(', '));
+        return { embed };
+    }
+
     private static async requestToAniList(query: string, variables: object): Promise<any> {
         // Even though bot has global error handler, I want to separate out request errors and api errors.
         try {
             let result: AxiosResponse<any> = await axios.post(Anime.BASE_URL, { query, variables }, Anime.options);
-            return result.data.data ? result.data.data : result.data.errors;
+            return result.data.errors ? result.data.errors : result.data.data;
+            // errors has shape [{message, status}]
         } catch (error) {
             console.log(error.response.data);
             let errorMsg = error.response.data || 'An error occurred in making the request.';
@@ -70,6 +99,11 @@ class Anime {
             if (seasons.includes(s)) season = s;
         }
         return { season, seasonYear: date.getFullYear(), page };
+    }
+
+    private static formatTitle(title: { english: string; romaji: string }, format: string): string {
+        let enTitle: string | null = title.english !== null ? `(${title.english}) -` : '-';
+        return `${title.romaji} ${enTitle} ${format}`;
     }
 
     private static options = {
