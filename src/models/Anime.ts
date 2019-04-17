@@ -31,9 +31,6 @@ class Anime {
         let page: number = Number(extract[1]) || 1;
         let variables = Anime.getSeasonTags(extract[0], page);
         let result = await Anime.requestToAniList(getBySeason, variables);
-        // Successful Request is an object, failed request is Array
-        if (Array.isArray(result)) throw createError(result[0].message, result[0].status);
-
         let { pageInfo, media } = result.Page;
         // format by page, reactions will be needed most likely
         let embed = new RichEmbed()
@@ -52,38 +49,32 @@ class Anime {
 
     static async search(message: PrefixedMessage): Promise<SendMsgEmbed> {
         let result = await Anime.requestToAniList(searchAnime, { search: message.noPrefix });
-        // Successful Request is an object, failed request is Array
-        if (Array.isArray(result)) throw createError(result[0].message, result[0].status);
-
         let anime: any = result.Media;
-        let airDate = new Date(anime.startDate.year, anime.startDate.month - 1, anime.startDate.day);
         let embed = new RichEmbed()
-            .setAuthor(anime.studios.nodes[0].name)
+            .setAuthor(`Studio: ${anime.studios.nodes[0].name}`)
             .setTitle(Anime.formatTitle(anime.title, anime.format))
             .setDescription(anime.description)
             .setThumbnail(Anime.ANILIST_LOGO)
             .setFooter(`${Anime.BASE_URL_ANIME}/${anime.id}`)
             .setTimestamp()
             .setImage(anime.coverImage.large)
+            .addField('Other Names', anime.synonyms.join(',\n') || 'None')
             .addField('Source', anime.source)
-            .addField('Air Date', `${airDate.toDateString()} - ${anime.season}`)
             .addField('Episodes', `${anime.episodes} (${anime.duration} min each)`)
             .addField('Status', anime.status)
-            .addField('Tags', anime.tags.join(', '))
+            .addField('Tags', anime.tags.map((s: { name: string }) => s.name).join(', '))
             .addField('Genres', anime.genres.join(', '));
         return { embed };
     }
 
-    private static async requestToAniList(query: string, variables: object): Promise<any> {
+    static async requestToAniList(query: string, variables: object): Promise<any> {
         // Even though bot has global error handler, I want to separate out request errors and api errors.
         try {
             let result: AxiosResponse<any> = await axios.post(Anime.BASE_URL, { query, variables }, Anime.options);
-            return result.data.errors ? result.data.errors : result.data.data;
-            // errors has shape [{message, status}]
+            return result.data.data;
         } catch (error) {
-            console.log(error.response.data);
-            let errorMsg = error.response.data || 'An error occurred in making the request.';
-            throw createError(errorMsg, 400);
+            let errorMsg = error.response.data.errors[0].message || 'An error occurred in making the request.';
+            throw createError(errorMsg, error.response.status);
         }
     }
 
