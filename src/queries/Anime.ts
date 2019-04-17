@@ -32,16 +32,12 @@ export const searchAnime: string = `query ($search: String) {
     }
     format
     genres
+    synonyms
     tags {
       name
     }
     source
     season
-    startDate {
-      year
-      month
-      day
-    }
     episodes
     duration
     status
