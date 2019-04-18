@@ -14,7 +14,8 @@ Uses GraphQL.
 
 class Anime {
     static responseMap: ResponseMap = {
-        season: 'Contains filler description.',
+        season: 'Searches all anime airing for the specified season/year combination.',
+        search: 'Searches for a speciifc anime, and returns some basic info.',
     };
     static methodMap: MethodMap = {
         help: Anime.responseMap,
