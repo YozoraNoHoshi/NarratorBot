@@ -36,6 +36,11 @@ export const searchAnime: string = `query ($search: String) {
     tags {
       name
     }
+    startDate {
+      year
+      month
+      day
+    }
     source
     season
     episodes

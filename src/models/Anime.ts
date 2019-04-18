@@ -24,7 +24,7 @@ class Anime {
 
     private static BASE_URL: string = 'https://graphql.anilist.co';
     private static BASE_URL_ANIME: string = 'https://anilist.co/anime';
-    private static ANILIST_LOGO: string = 'https://anilist.co/img/icons/icon.svg';
+    private static ANILIST_LOGO: string = 'https://avatars3.githubusercontent.com/u/18018524';
 
     static async season(message: PrefixedMessage): Promise<SendMsgEmbed> {
         let extract: string[] = message.noPrefix.split(' --page ');
@@ -50,12 +50,14 @@ class Anime {
     static async search(message: PrefixedMessage): Promise<SendMsgEmbed> {
         let result = await Anime.requestToAniList(searchAnime, { search: message.noPrefix });
         let anime: any = result.Media;
+        let date = new Date(`${anime.startDate.year} ${anime.startDate.month} ${anime.startDate.day}`);
         let embed = new RichEmbed()
             .setAuthor(`Studio: ${anime.studios.nodes[0].name}`)
             .setTitle(Anime.formatTitle(anime.title, anime.format))
             .setDescription(anime.description)
             .setThumbnail(Anime.ANILIST_LOGO)
-            .setFooter(`${Anime.BASE_URL_ANIME}/${anime.id}`)
+            .setURL(`${Anime.BASE_URL_ANIME}/${anime.id}`)
+            .setFooter(`Aired on: ${date.toDateString()}`)
             .setTimestamp()
             .setImage(anime.coverImage.large)
             .addField('Other Names', anime.synonyms.join(',\n') || 'None')

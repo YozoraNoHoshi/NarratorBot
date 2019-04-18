@@ -98,6 +98,7 @@ test('it gets Tsuki Ga Kirei from searching (may change due to the api and its w
     expect(result.embed).toHaveProperty('footer');
     expect(result.embed).toHaveProperty('title');
     expect(result.embed).toHaveProperty('thumbnail');
+    expect(result.embed).toHaveProperty('url');
     expect(result.embed).toHaveProperty('author');
     expect(result.embed.author).toHaveProperty('name', 'Studio: feel.');
 });
@@ -132,6 +133,11 @@ test('it gets returns data for Tsuki Ga Kirei from searching (may change due to 
                     name: 'School Club',
                 },
             ],
+            startDate: {
+                year: 2017,
+                month: 4,
+                day: 7,
+            },
             source: 'ORIGINAL',
             season: 'SPRING',
             episodes: 12,
