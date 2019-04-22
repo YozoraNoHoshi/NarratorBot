@@ -56,4 +56,5 @@ in the console.
 * Slap a user
 * ~~Better formatting for messages~~
 * Some other fun minigames 
-* Other API calls
+* Alerts/Calendars/Time notifications
+* ~~AniList calls for anime stuff~~
