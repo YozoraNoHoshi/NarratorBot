@@ -28,6 +28,7 @@ class Anime {
     private static ANILIST_LOGO: string = 'https://avatars3.githubusercontent.com/u/18018524';
 
     static async season(message: PrefixedMessage): Promise<SendMsgEmbed> {
+        // message should be something like <PREFIX>anime season <SEASON> <YEAR> --page <PAGE>
         let extract: string[] = message.noPrefix.split(' --page ');
         let page: number = Number(extract[1]) || 1;
         let variables = Anime.getSeasonTags(extract[0], page);
@@ -48,7 +49,14 @@ class Anime {
         return { embed };
     }
 
+    static async getAiring(message: PrefixedMessage): Promise<SendMsgEmbed> {
+        let embed = new RichEmbed();
+        return { embed };
+    }
+
     static async search(message: PrefixedMessage): Promise<SendMsgEmbed> {
+        // the message contents past the <PREFIX>anime search
+        // becomes the search query.
         let result = await Anime.requestToAniList(searchAnime, { search: message.noPrefix });
         let anime: any = result.Media;
         let date = new Date(`${anime.startDate.year} ${anime.startDate.month} ${anime.startDate.day}`);
