@@ -57,7 +57,7 @@ export const searchAnime: string = `query ($search: String) {
 `;
 
 export const getByAiring: string = `query ($notYetAired: Boolean, $episode: Int, $page: Int) {
-  Page (perPage: 25, page: $page) {
+  Page(perPage: 25, page: $page) {
     pageInfo {
       total
       currentPage
@@ -65,7 +65,7 @@ export const getByAiring: string = `query ($notYetAired: Boolean, $episode: Int,
       hasNextPage
       perPage
     }
-    airingSchedules(notYetAired: $notYetAired, episode: $episode) {
+    airingSchedules(notYetAired: $notYetAired, episode_lesser: $episode, sort: TIME) {
       media {
         id
         title {
@@ -73,11 +73,11 @@ export const getByAiring: string = `query ($notYetAired: Boolean, $episode: Int,
           english
           native
         }
+        format
       }
-      id
       airingAt
       episode
-      timeUntilAiring
     }
   }
-}`;
+}
+`;

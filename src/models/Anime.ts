@@ -3,6 +3,7 @@ import { RichEmbed } from 'discord.js';
 import axios, { AxiosResponse } from 'axios';
 import { getByAiring, getBySeason, searchAnime } from '../queries/Anime';
 import createError from '../helpers/createError';
+import extractDate from '../helpers/extractDate';
 
 /* 
 Using API for anilist
@@ -16,11 +17,13 @@ class Anime {
     static responseMap: ResponseMap = {
         season: 'Searches all anime airing for the specified season/year combination.',
         search: 'Searches for a speciifc anime, and returns some basic info.',
+        airing: 'Returns upcoming anime episodes and when they air.',
     };
     static methodMap: MethodMap = {
         help: Anime.responseMap,
         season: Anime.season,
         search: Anime.search,
+        airing: Anime.getAiring,
     };
 
     private static BASE_URL: string = 'https://graphql.anilist.co';
@@ -43,14 +46,31 @@ class Anime {
             let title: string = Anime.formatTitle(anime.title, anime.format);
             let desc: string = `Genres: ${anime.genres.join(', ')}\nEpisodes: ${anime.episodes}\nStatus: ${
                 anime.status
-            }\n${Anime.BASE_URL_ANIME}/${anime.id}`;
+            }\n${Anime.aniListLink(anime.id)}`;
             embed.addField(title, desc);
         }
         return { embed };
     }
 
     static async getAiring(message: PrefixedMessage): Promise<SendMsgEmbed> {
-        let embed = new RichEmbed();
+        let extract: string[] = message.noPrefix.split('--page ');
+        let page: number = Number(extract[1]) || 1;
+        let result = await Anime.requestToAniList(getByAiring, { notYetAired: true, episode: 26, page });
+        let { pageInfo, airingSchedules } = result.Page;
+        let embed = new RichEmbed()
+            .setTitle('Currently Airing Anime')
+            .setFooter(`Page ${pageInfo.currentPage} of ${pageInfo.lastPage}`)
+            .setTimestamp();
+        for (let anime of airingSchedules) {
+            let title: string = Anime.formatTitle(anime.media.title);
+            let airingAt: Date = new Date(anime.airingAt * 1000);
+            let desc: string = `Type: ${anime.media.format}\nEpisode: ${
+                anime.episode
+            }\nApproximate Airing at: ${airingAt.toDateString()}, ${extractDate(airingAt)}\n${Anime.aniListLink(
+                anime.media.id,
+            )}`;
+            embed.addField(title, desc);
+        }
         return { embed };
     }
 
@@ -65,7 +85,7 @@ class Anime {
             .setTitle(Anime.formatTitle(anime.title, anime.format))
             .setDescription(anime.description)
             .setThumbnail(Anime.ANILIST_LOGO)
-            .setURL(`${Anime.BASE_URL_ANIME}/${anime.id}`)
+            .setURL(`${Anime.aniListLink(anime.id)}`)
             .setFooter(`Aired on: ${date.toDateString()}`)
             .setTimestamp()
             .setImage(anime.coverImage.large)
@@ -103,9 +123,13 @@ class Anime {
         return { season, seasonYear: date.getFullYear(), page };
     }
 
-    private static formatTitle(title: { english: string; romaji: string }, format: string): string {
-        let enTitle: string | null = title.english !== null ? `(${title.english}) -` : '-';
-        return `${title.romaji} ${enTitle} ${format}`;
+    private static formatTitle(title: { english: string; romaji: string }, format?: string): string {
+        let enTitle: string | null = title.english !== null ? `(${title.english})` : '';
+        return `${title.romaji} ${enTitle} ${format ? `- ${format}` : ''}`;
+    }
+
+    private static aniListLink(id: number | string): string {
+        return `${Anime.BASE_URL_ANIME}/${id}`;
     }
 
     private static options = {

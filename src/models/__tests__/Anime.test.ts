@@ -2,8 +2,10 @@ import Anime from '../Anime';
 import { searchAnime } from '../../queries/Anime';
 import createError from '../../helpers/createError';
 
-// will need supertest for doing api request testing to anilist.
-// TO DO once the get anime commands are finished
+// While I want to test Anime.season and Anime.getAiring, too many api requests will likely annoy the API, especially since these just in tests
+// Tests for Anime.season and Anime.getAiring are also very similar to testing Anime.search.
+// Still want tests.
+// Investigate Axios Mocks or some other form of mocking api requests so we dont make like 6+ api requests every git push
 
 test('It produces proper season tags based off string', () => {
     let result = Anime.getSeasonTags('WINTER 2018');
@@ -86,7 +88,20 @@ test('It produces proper season tags based off different order string', () => {
     expect(result).toHaveProperty('page', 1);
 });
 
-test('it gets Tsuki Ga Kirei from searching (may change due to the api and its whims)', async () => {
+test('Anime.getAiring', async () => {
+    let search: any = { noPrefix: '--page 1' };
+    let result: any = await Anime.getAiring(search);
+    expect(result).toHaveProperty('embed');
+    expect(result.embed).toHaveProperty('fields');
+    expect(result.embed.fields.length).toBe(25);
+    expect(result.embed).toHaveProperty('timestamp');
+    expect(result.embed).toHaveProperty('footer');
+    expect(result.embed).toHaveProperty('title');
+    expect(result.embed.fields[0]).toHaveProperty('name');
+    expect(result.embed.fields[0]).toHaveProperty('value');
+});
+
+test('Anime.search method for Tsuki Ga Kirei', async () => {
     let search: any = { noPrefix: 'Tsuki Ga Kirei' };
     let result: any = await Anime.search(search);
     expect(result).toHaveProperty('embed');
