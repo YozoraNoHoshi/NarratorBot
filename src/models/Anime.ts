@@ -125,7 +125,7 @@ class Anime {
 
     private static formatTitle(title: { english: string; romaji: string }, format?: string): string {
         let enTitle: string | null = title.english !== null ? `(${title.english})` : '';
-        return `${title.romaji} ${enTitle} ${format ? `- ${format}` : ''}`;
+        return `${title.romaji} ${enTitle}${format ? ` - ${format}` : ''}`;
     }
 
     private static aniListLink(id: number | string): string {
