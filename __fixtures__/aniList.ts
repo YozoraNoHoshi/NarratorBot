@@ -389,3 +389,292 @@ export const getAiringSearch: any = {
         },
     },
 };
+export const getSeasonSearch: any = {
+    data: {
+        Page: {
+            pageInfo: {
+                total: 59,
+                currentPage: 1,
+                lastPage: 3,
+                perPage: 25,
+            },
+            media: [
+                {
+                    title: {
+                        romaji: 'Fate/EXTRA Last Encore',
+                        english: null,
+                    },
+                    id: 21717,
+                    format: 'TV',
+                    genres: ['Action', 'Fantasy'],
+                    episodes: 13,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Violet Evergarden',
+                        english: 'Violet Evergarden',
+                    },
+                    id: 21827,
+                    format: 'TV',
+                    genres: ['Drama', 'Fantasy', 'Slice of Life'],
+                    episodes: 13,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'IDOLiSH7',
+                        english: 'IDOLiSH7',
+                    },
+                    id: 87495,
+                    format: 'TV',
+                    genres: ['Music', 'Drama', 'Comedy'],
+                    episodes: 17,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Grancrest Senki',
+                        english: 'Record of Grancrest War',
+                    },
+                    id: 97768,
+                    format: 'TV',
+                    genres: ['Action', 'Fantasy'],
+                    episodes: 24,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Citrus',
+                        english: 'Citrus',
+                    },
+                    id: 97832,
+                    format: 'TV',
+                    genres: ['Drama', 'Romance', 'Ecchi'],
+                    episodes: 12,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Cardcaptor Sakura: Clear Card-hen',
+                        english: 'Cardcaptor Sakura: Clear Card',
+                    },
+                    id: 97881,
+                    format: 'TV',
+                    genres: ['Mahou Shoujo', 'Romance', 'Comedy', 'Adventure', 'Fantasy'],
+                    episodes: 22,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Death March Kara Hajimaru Isekai Kyousoukyoku',
+                        english: 'Death March to the Parallel World Rhapsody',
+                    },
+                    id: 97907,
+                    format: 'TV',
+                    genres: ['Action', 'Adventure', 'Comedy', 'Fantasy'],
+                    episodes: 12,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Saiki Kusuo no Ψ Nan 2',
+                        english: 'The Disastrous Life of Saiki K. 2',
+                    },
+                    id: 98034,
+                    format: 'TV',
+                    genres: ['Comedy', 'Slice of Life', 'Supernatural'],
+                    episodes: 24,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Sanrio Danshi',
+                        english: 'SANRIO BOYS',
+                    },
+                    id: 98217,
+                    format: 'TV',
+                    genres: ['Slice of Life'],
+                    episodes: 12,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Bungou Stray Dogs: DEAD APPLE',
+                        english: null,
+                    },
+                    id: 98384,
+                    format: 'MOVIE',
+                    genres: ['Mystery', 'Supernatural', 'Action', 'Comedy'],
+                    episodes: 1,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Koi wa Ameagari no You ni',
+                        english: 'After the Rain',
+                    },
+                    id: 98385,
+                    format: 'TV',
+                    genres: ['Drama', 'Romance', 'Slice of Life'],
+                    episodes: 12,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Killing Bites',
+                        english: null,
+                    },
+                    id: 98389,
+                    format: 'TV',
+                    genres: ['Action', 'Ecchi', 'Horror', 'Sci-Fi'],
+                    episodes: 12,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Overlord II',
+                        english: null,
+                    },
+                    id: 98437,
+                    format: 'TV',
+                    genres: ['Action', 'Adventure', 'Fantasy'],
+                    episodes: 13,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Mitsuboshi Colors',
+                        english: 'Mitsuboshi Colors',
+                    },
+                    id: 98439,
+                    format: 'TV',
+                    genres: ['Comedy', 'Slice of Life'],
+                    episodes: 12,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Yuru Camp△',
+                        english: 'Laid-Back Camp',
+                    },
+                    id: 98444,
+                    format: 'TV',
+                    genres: ['Slice of Life', 'Comedy'],
+                    episodes: 12,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Gakuen Babysitters',
+                        english: 'School Babysitters',
+                    },
+                    id: 98503,
+                    format: 'TV',
+                    genres: ['Comedy', 'Slice of Life'],
+                    episodes: 12,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Mazinger Z Movie: INFINITY',
+                        english: null,
+                    },
+                    id: 98516,
+                    format: 'MOVIE',
+                    genres: ['Action', 'Comedy', 'Mecha', 'Sci-Fi', 'Supernatural'],
+                    episodes: 1,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Zoku Touken Ranbu - Hanamaru',
+                        english: 'Touken Ranbu - Hanamaru 2',
+                    },
+                    id: 98520,
+                    format: 'TV',
+                    genres: ['Fantasy', 'Slice of Life'],
+                    episodes: 12,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Ramen Daisuki Koizumi-san',
+                        english: 'Ms. Koizumi Loves Ramen Noodles',
+                    },
+                    id: 98529,
+                    format: 'TV',
+                    genres: ['Slice of Life', 'Comedy'],
+                    episodes: 12,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Poputepipikku',
+                        english: 'Pop Team Epic',
+                    },
+                    id: 98549,
+                    format: 'TV',
+                    genres: ['Comedy'],
+                    episodes: 12,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Hitori no Shita: The Outcast 2nd Season',
+                        english: null,
+                    },
+                    id: 98574,
+                    format: 'TV',
+                    genres: ['Action', 'Supernatural'],
+                    episodes: 24,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Slow Start',
+                        english: 'Slow Start',
+                    },
+                    id: 98693,
+                    format: 'TV',
+                    genres: ['Slice of Life', 'Comedy'],
+                    episodes: 12,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Toji no Miko',
+                        english: 'Katana Maidens ~ Toji No Miko',
+                    },
+                    id: 98747,
+                    format: 'TV',
+                    genres: ['Action'],
+                    episodes: 24,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Chuunibyou demo Koi ga Shitai!: Take on Me',
+                        english: 'Love, Chunibyo & Other Delusions: Take on Me',
+                    },
+                    id: 98762,
+                    format: 'MOVIE',
+                    genres: ['Comedy', 'Drama', 'Romance', 'Slice of Life'],
+                    episodes: 1,
+                    status: 'FINISHED',
+                },
+                {
+                    title: {
+                        romaji: 'Eiga Doraemon: Nobita no Takarajima',
+                        english: null,
+                    },
+                    id: 99084,
+                    format: 'MOVIE',
+                    genres: ['Comedy', 'Sci-Fi'],
+                    episodes: 1,
+                    status: 'FINISHED',
+                },
+            ],
+        },
+    },
+};

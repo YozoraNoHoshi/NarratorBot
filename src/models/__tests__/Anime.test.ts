@@ -1,7 +1,7 @@
 import Anime from '../Anime';
 import { searchAnime } from '../../queries/Anime';
 import createError from '../../helpers/createError';
-import { tsukiGaKireiSearch, getAiringSearch } from '../../../__fixtures__/aniList';
+import { tsukiGaKireiSearch, getAiringSearch, getSeasonSearch } from '../../../__fixtures__/aniList';
 import axios from 'axios';
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -85,6 +85,26 @@ test('It produces proper season tags based off different order string', () => {
     expect(result).toHaveProperty('season', 'FALL');
     expect(result).toHaveProperty('seasonYear', 2001);
     expect(result).toHaveProperty('page', 1);
+});
+
+test('Anime.getSeason', async () => {
+    let data = getSeasonSearch;
+    let axiosReturn: any = { data };
+    mockedAxios.post.mockResolvedValue(axiosReturn);
+
+    let search: any = { noPrefix: 'WINTER 2018 --page 1' };
+    let result: any = await Anime.season(search);
+    expect(result).toHaveProperty('embed');
+    expect(result.embed).toHaveProperty('fields');
+    expect(result.embed.fields.length).toBe(25);
+    expect(result.embed).toHaveProperty('timestamp');
+    expect(result.embed).toHaveProperty('footer');
+    expect(result.embed).toHaveProperty('title', 'Anime Season WINTER 2018');
+    expect(result.embed.fields[0]).toHaveProperty('name', 'Fate/EXTRA Last Encore  - TV');
+    expect(result.embed.fields[0]).toHaveProperty(
+        'value',
+        'Genres: Action, Fantasy\nEpisodes: 13\nStatus: FINISHED\nhttps://anilist.co/anime/21717',
+    );
 });
 
 test('Anime.getAiring', async () => {
