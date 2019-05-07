@@ -1,5 +1,5 @@
 import { Client } from 'discord.js';
 
-const client: any = new Client();
+const client: Client = new Client();
 
 export default client;

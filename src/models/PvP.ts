@@ -1,6 +1,6 @@
 import { SendMsgEmbed, Player, PrefixedMessage } from '../types';
 import createError from '../helpers/createError';
-import { RichEmbed } from 'discord.js';
+import { RichEmbed, User } from 'discord.js';
 import fMessage, { BOLD, ITALICS } from '../helpers/fMessage';
 import randomChoice from '../helpers/randomChoice';
 import client from '../client';
@@ -27,9 +27,9 @@ class PvP {
 
     static duel(message: PrefixedMessage): SendMsgEmbed {
         // initiates a duel between two users, the sender of the message + the first user mentioned in the message.
-        let player1: any = message.author;
+        let player1: User = message.author;
         // Cannot duel bots except this one.
-        let player2: any = message.mentions.users.filter((user: any) => user === client.user || !user.bot).first();
+        let player2: User = message.mentions.users.filter((user: any) => user === client.user || !user.bot).first();
         if (!player2) throw createError('You must duel against someone!', 400);
         // Dueling the bot is rigged, player will always lose by the slimmest of margins... or get absolutely slaughtered.
 

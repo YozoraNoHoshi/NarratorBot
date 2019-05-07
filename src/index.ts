@@ -22,6 +22,7 @@ client.on(
                 // https://discord.js.org/#/docs/main/stable/class/Message?scrollTo=awaitReactions
                 return;
             } else if (message.author.bot) {
+                // Do not respond to other bots
                 return;
             }
             if (message.guild) {
