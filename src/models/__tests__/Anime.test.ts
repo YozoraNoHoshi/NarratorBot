@@ -159,12 +159,12 @@ test('it gets returns data for Tsuki Ga Kirei from searching (may change due to 
 // Need to figure out how to handle mocked rejected messages
 // test('it throws an error from anilist', async () => {
 //     let axiosReturn: any = createError('Not Found.', 404);
+//     // MockRejectedValue is returning the fallback for a failed request rather than what the API would return
 //     mockedAxios.post.mockRejectedValue(axiosReturn);
 //     let error: any;
 //     try {
 //         await Anime.requestToAniList(searchAnime, { search: '///////////////////' });
 //     } catch (e) {
-//         console.log(e);
 //         error = e;
 //     }
 //     expect(error).toEqual(createError(`Not Found.`, 404));

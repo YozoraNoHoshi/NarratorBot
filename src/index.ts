@@ -48,7 +48,6 @@ client.on(
     },
 );
 
-// client.on('messageDelete', (message: Message & DeletedMessage) => {
 client.on('messageDelete', (message: Message) => {
     // add it to the messageLog class via method
     try {

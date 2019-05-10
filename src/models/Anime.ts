@@ -16,7 +16,7 @@ Uses GraphQL.
 class Anime {
     static responseMap: ResponseMap = {
         season: 'Searches all anime airing for the specified season/year combination.',
-        search: 'Searches for a speciifc anime, and returns some basic info.',
+        search: 'Searches for a specific anime, and returns some basic info.',
         airing: 'Returns upcoming anime episodes and when they air.',
     };
     static methodMap: MethodMap = {
@@ -104,8 +104,14 @@ class Anime {
             let result: AxiosResponse<any> = await axios.post(Anime.BASE_URL, { query, variables }, Anime.options);
             return result.data.data;
         } catch (error) {
-            let errorMsg = error.response.data.errors[0].message || 'An error occurred in making the request.';
-            throw createError(errorMsg, error.response.status);
+            // let errorMsg = error.response.data.errors[0].message || 'An error occurred in making the request.';
+            let { response } = error;
+            let errorMsg =
+                response && response.data
+                    ? response.data.errors[0].message
+                    : 'An error occurred in making the request.';
+            let status = !response || !response.status ? 400 : response.status;
+            throw createError(errorMsg, status);
         }
     }
 
@@ -121,6 +127,10 @@ class Anime {
             if (seasons.includes(s)) season = s;
         }
         return { season, seasonYear: date.getFullYear(), page };
+    }
+
+    private static getErrorMessage(error: any): string {
+        return error && error.data ? error.data.errors[0].message : 'An error occurred in making the request.';
     }
 
     private static formatTitle(title: { english: string; romaji: string }, format?: string): string {
