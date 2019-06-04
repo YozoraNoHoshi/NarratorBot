@@ -29,7 +29,7 @@ test('It should restore messages that were deleted', async () => {
     expect(response.embed).toHaveProperty('description', '5 recently deleted messages');
     expect(response.embed).toHaveProperty('fields');
     expect(response.embed.fields.length).toBe(5);
-    expect(response.embed.fields[0]).toHaveProperty('name', `another blah - ${date.toDateString()}`);
+    expect(response.embed.fields[0]).toHaveProperty('name', `another blah#1323 - ${date.toDateString()}`);
     expect(response.embed.fields[0]).toHaveProperty('value', 'blegh');
 });
 
@@ -40,6 +40,6 @@ function makeMessage(id: any, channel?: string): any {
         createdAt: date,
         content: 'blegh',
         deleted: true,
-        author: { username: 'another blah' },
+        author: { username: 'another blah', tag: 'another blah#1323' },
     };
 }
