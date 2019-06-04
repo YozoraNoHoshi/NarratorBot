@@ -3,6 +3,7 @@ import createError from '../helpers/createError';
 import { RichEmbed } from 'discord.js';
 import fMessage, { BOLD } from '../helpers/fMessage';
 import { SendMsgEmbed, MethodMap, ResponseMap, PrefixedMessage } from '../types';
+import { EMOJI_PREFIX, EMOJI_SUFFIX } from '../config';
 
 // named as such so as to not cause confusion with Discord.js's emoji class
 class CustomEmoji {
@@ -24,7 +25,7 @@ class CustomEmoji {
         let embed: RichEmbed = new RichEmbed()
             .setTitle(`${fMessage('Available Emoji', BOLD)}`)
             .setColor('#00CED1')
-            .setDescription(`Use an emoji with '[EMOJI]`)
+            .setDescription(`Use an emoji with '${EMOJI_PREFIX}EMOJI${EMOJI_SUFFIX}`)
             .setTimestamp();
         for (let emojiObj of result.rows) {
             embed.addField(emojiObj.name, '');

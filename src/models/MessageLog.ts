@@ -35,7 +35,7 @@ class MessageLog {
             .setColor('#2F4F4F')
             .setTimestamp();
         for (let message of log) {
-            embed.addField(`${message.author.username} - ${message.createdAt.toDateString()}`, `${message.content}`);
+            embed.addField(`${message.author.tag} - ${message.createdAt.toDateString()}`, `${message.content}`);
         }
         return { embed };
     }
