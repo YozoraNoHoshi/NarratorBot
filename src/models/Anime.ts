@@ -5,14 +5,6 @@ import { getByAiring, getBySeason, searchAnime } from '../queries/Anime';
 import createError from '../helpers/createError';
 import extractDate from '../helpers/extractDate';
 
-/* 
-Using API for anilist
-Should allow for basic info on anime, airing times, all anime in a season, etc etc. 
-Uses GraphQL.
-*/
-
-// https://anilist.gitbook.io/anilist-apiv2-docs/overview/overview
-
 class Anime {
     static responseMap: ResponseMap = {
         season: 'Searches all anime airing for the specified season/year combination.',
@@ -99,12 +91,10 @@ class Anime {
     }
 
     static async requestToAniList(query: string, variables: object): Promise<any> {
-        // Even though bot has global error handler, I want to separate out request errors and api errors.
         try {
             let result: AxiosResponse<any> = await axios.post(Anime.BASE_URL, { query, variables }, Anime.options);
             return result.data.data;
         } catch (error) {
-            // let errorMsg = error.response.data.errors[0].message || 'An error occurred in making the request.';
             let { response } = error;
             let errorMsg =
                 response && response.data
@@ -127,10 +117,6 @@ class Anime {
             if (seasons.includes(s)) season = s;
         }
         return { season, seasonYear: date.getFullYear(), page };
-    }
-
-    private static getErrorMessage(error: any): string {
-        return error && error.data ? error.data.errors[0].message : 'An error occurred in making the request.';
     }
 
     private static formatTitle(title: { english: string; romaji: string }, format?: string): string {
