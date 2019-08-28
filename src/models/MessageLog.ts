@@ -11,7 +11,7 @@ class MessageLog {
 
   static addDeleted(message: Message) {
     // Basically here to access the private messagelog
-    message.deleted && MessageLog._messageLog.push(message);
+    MessageLog._messageLog.push(message);
   }
 
   private static clearLog(toBeCleared: Message[]): Message[] {
