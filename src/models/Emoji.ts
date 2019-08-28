@@ -42,17 +42,19 @@ class CustomEmoji {
   static async addEmoji(message: PrefixedMessage): Promise<string | void> {
     let newEmoji: string[] = message.noPrefix.split(' ');
     const mongodb = await db
-    let result: any = await mongodb
+    let result = await mongodb
       .collection('emojis')
-      .update({ name: newEmoji[0] }, { $set: { image: newEmoji[1] } }, { upsert: true });
-    return result.upsertedCount === 1 ? `\`Updated the ${newEmoji[0]} emoji.\`` : `\`Added the ${newEmoji[0]} emoji.\``;
+      .updateOne({ name: newEmoji[0] }, { $set: { image: newEmoji[1] } }, { upsert: true });
+    return result.result.nModified === 1 ? `\`Updated the ${newEmoji[0]} emoji.\`` : `\`Added the ${newEmoji[0]} emoji.\``;
   }
 
   // deletes an emoji from the database. requires the name of the emoji
   static async deleteEmoji(message: PrefixedMessage): Promise<string> {
     const mongodb = await db
-    let result: any = await mongodb.collection('emojis').deleteOne({name: message.noPrefix})
-    if (result.deletedCount === 1) return `\`Deleted emoji ${message.noPrefix}\``;
+    let result = await mongodb.collection('emojis').deleteOne({name: message.noPrefix})
+
+    const { deletedCount } = result
+    if (deletedCount === 1) return `\`Deleted emoji ${message.noPrefix}\``;
     throw createError(`Could not find emoji named ${message.noPrefix}.`, 404);
   }
 
