@@ -9,7 +9,7 @@ import { Message, Attachment } from 'discord.js';
 
 client.on('ready', () => {
   console.log('Drain your glass!');
-  client.user.setActivity('the fluff.', { type: 'WATCHING' });
+  client.user.setActivity(process.env.ACTIVITY_LABEL || 'anime.', { type: 'WATCHING' });
 });
 
 client.on(
