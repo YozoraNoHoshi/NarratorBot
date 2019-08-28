@@ -9,4 +9,4 @@ export const EMOJI_SUFFIX: string = '';
 // DO NOT HARDCODE THE TOKEN HERE. STORE IT IN .ENV
 export const TOKEN: string | undefined = process.env.token;
 export const DB_NAME: string = process.env.NODE_ENV === 'test' ? 'nfubotstoretest' : process.env.DB_NAME || 'nfubotstore'
-export const DB_URI: string = process.env.NODE_ENV === 'test' ? `mongodb://localhost:27017/${DB_NAME}TEST` : process.env.DB_URI || `mongodb://localhost:27017/${DB_NAME}`;
+export const DB_URI: string = process.env.NODE_ENV === 'test' ? `mongodb://localhost:27017/${DB_NAME}TEST` : process.env.MONGODB_URI || process.env.DB_URI || `mongodb://localhost:27017/${DB_NAME}`;
