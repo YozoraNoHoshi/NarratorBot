@@ -2,10 +2,11 @@
   "name": "nfu-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "built/src/index.js",
   "scripts": {
-    "start": "tsc && node --require dotenv/config built/index.js",
-    "test": "jest"
+    "start": "npx tsc && node --require dotenv/config built/src/index.js",
+    "test": "jest",
+    "postinstall": "npx tsc"
   },
   "husky": {
     "hooks": {

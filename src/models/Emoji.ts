@@ -31,9 +31,8 @@ class CustomEmoji {
       .setColor('#00CED1')
       .setDescription(`Use an emoji with '${EMOJI_PREFIX}EMOJI${EMOJI_SUFFIX}`)
       .setTimestamp();
-    // for (let emojiObj of result.rows) {
     for (let emojiObj of result) {
-      embed.addField(emojiObj.name, '');
+      embed.addField(emojiObj.name, emojiObj.image);
     }
     return { embed };
   }
