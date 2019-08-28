@@ -32,7 +32,7 @@ class CustomEmoji {
       .find({})
       .toArray();
 
-    let numEmbeds = Math.ceil(result.length % 25);
+    let numEmbeds = Math.ceil(result.length / 25);
 
     return CustomEmoji.emojiListCreateEmbeds(result, numEmbeds)
   }
@@ -45,7 +45,7 @@ class CustomEmoji {
         .setColor('#00CED1')
         .setTimestamp();
       if (i === undefined || i === 0) embed.setDescription(`Use an emoji with '${EMOJI_PREFIX}EMOJI${EMOJI_SUFFIX}`);
-      else embed.setDescription(`Page ${i} of ${numEmbeds}`);
+      else embed.setDescription(`Page ${i + 1} of ${numEmbeds}`);
       return embed;
     };
 
