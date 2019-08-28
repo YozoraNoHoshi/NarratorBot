@@ -29,8 +29,12 @@ client.on(
         // standard commands that start with prefix
         if (message.content.trimLeft().startsWith(BOT_PREFIX)) {
           message.noPrefix = message.content.slice(BOT_PREFIX.length);
-          let response: string | void | SendMsgEmbed = await Bot.commandCenter(message);
-          if (response) message.channel.send(response);
+          let response = await Bot.commandCenter(message);
+          if (response) {
+            Array.isArray(response)
+              ? response.forEach(async (r: string | SendMsgEmbed) => await message.channel.send(r))
+              : message.channel.send(response);
+          }
         }
         // emoji/image response
         else if (message.content.startsWith(EMOJI_PREFIX) && message.content.endsWith(EMOJI_SUFFIX)) {

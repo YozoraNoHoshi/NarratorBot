@@ -36,7 +36,7 @@ class Bot {
   static async commandCenter(
     message: PrefixedMessage,
     methodMap: MethodMap = Bot.methodMap,
-  ): Promise<string | void | SendMsgEmbed> {
+  ): Promise<string | void | SendMsgEmbed | string[] | SendMsgEmbed[]> {
     let messageParts: string[] = message.noPrefix.trim().split(' ');
     let command: string = messageParts[0].toLowerCase();
     // console.log('command:', command)
