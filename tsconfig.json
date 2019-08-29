@@ -6,7 +6,7 @@
         "noImplicitReturns": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
-        "strict": true
+        "strict": true,
     },
     "include": ["./src/**/*"],
     "compileOnSave": true,

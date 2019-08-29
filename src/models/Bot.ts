@@ -7,6 +7,7 @@ import Misc from './Misc';
 import PvP from './PvP';
 import MessageLog from './MessageLog';
 import Anime from './Anime';
+import Weebify from './Weebify';
 
 class Bot {
   private static responseMap: ResponseMap = {
@@ -29,6 +30,7 @@ class Bot {
     log: MessageLog.restoreMessages,
     emoji: CustomEmoji.methodMap,
     anime: Anime.methodMap,
+    jp: Weebify.transform,
   };
 
   // This method allows for dynamic calling of other methods based on the incoming message.
