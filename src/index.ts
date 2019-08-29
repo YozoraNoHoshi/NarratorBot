@@ -7,6 +7,8 @@ import client from './client';
 import MessageLog from './models/MessageLog';
 import { Message, Attachment } from 'discord.js';
 
+const emojiRegex = new RegExp(`^(${EMOJI_PREFIX})(\\w+)(${EMOJI_SUFFIX})?(\\s)?(${EXTRA_FLAGS}[a-z]+)?`);
+
 client.on('ready', () => {
   console.log('Drain your glass!');
   client.user.setActivity(process.env.ACTIVITY_LABEL || 'anime.', { type: 'WATCHING' });
@@ -37,9 +39,9 @@ client.on(
           }
         }
         // emoji/image response
-        else if (message.content.match(new RegExp(`^(${EMOJI_PREFIX})(\\w+)(${EMOJI_SUFFIX})?(\\s)?(${EXTRA_FLAGS}[a-z]+)?`))) {
+        else if (message.content.match(emojiRegex)) {
           let [content, flag] = message.content.split(EXTRA_FLAGS)
-          let end: number = -EMOJI_SUFFIX.length || message.content.length;
+          let end: number = -EMOJI_SUFFIX.length || content.length;
           let emoji = content.trim().slice(EMOJI_PREFIX.length, end)
           let response: string | void = await CustomEmoji.emoji(emoji.trim());
           if (response) {
