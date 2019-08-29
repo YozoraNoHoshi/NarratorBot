@@ -39,9 +39,11 @@ client.on(
         // emoji/image response
         else if (message.content.startsWith(EMOJI_PREFIX) && message.content.endsWith(EMOJI_SUFFIX)) {
           let end: number = -EMOJI_SUFFIX.length || message.content.length;
-          let emoji: string = message.content.slice(EMOJI_PREFIX.length, end);
-          let response: string | void = await CustomEmoji.emoji(emoji);
-          if (response) message.channel.send(new Attachment(response));
+          let [emoji, flag] = message.content.slice(EMOJI_PREFIX.length, end).split('|');
+          let response: string | void = await CustomEmoji.emoji(emoji.trim());
+          if (response) {
+            flag.trim() === 'link' ? message.channel.send(emoji) : message.channel.send(new Attachment(response));
+          }
         }
       }
     } catch (error) {
