@@ -1,5 +1,5 @@
 // import discord = require('discord.js');
-import { TOKEN, BOT_PREFIX, EMOJI_PREFIX, EMOJI_SUFFIX } from './config';
+import { TOKEN, BOT_PREFIX, EMOJI_PREFIX, EMOJI_SUFFIX, EXTRA_FLAGS } from './config';
 import { PrefMessage, SendMsgEmbed } from './types';
 import Bot from './models/Bot';
 import CustomEmoji from './models/Emoji';
@@ -37,12 +37,15 @@ client.on(
           }
         }
         // emoji/image response
-        else if (message.content.startsWith(EMOJI_PREFIX) && message.content.endsWith(EMOJI_SUFFIX)) {
+        else if (message.content.match(new RegExp(`^(${EMOJI_PREFIX})(\\w+)(${EMOJI_SUFFIX})?(\\s)?(${EXTRA_FLAGS}[a-z]+)?`))) {
+          let [content, flag] = message.content.split(EXTRA_FLAGS)
           let end: number = -EMOJI_SUFFIX.length || message.content.length;
-          let [emoji, flag] = message.content.slice(EMOJI_PREFIX.length, end).split('|');
+          let emoji = content.trim().slice(EMOJI_PREFIX.length, end)
           let response: string | void = await CustomEmoji.emoji(emoji.trim());
           if (response) {
-            flag.trim() === 'link' ? message.channel.send(emoji) : message.channel.send(new Attachment(response));
+            flag && flag.trim() === 'link'
+              ? message.channel.send(response)
+              : message.channel.send(new Attachment(response));
           }
         }
       }

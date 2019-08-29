@@ -5,6 +5,7 @@
 export const BOT_PREFIX: string = process.env.BOT_PREFIX || '$';
 export const EMOJI_PREFIX: string = process.env.EMOJI_PREFIX || '--';
 export const EMOJI_SUFFIX: string = process.env.EMOJI_SUFFIX || '';
+export const EXTRA_FLAGS: string = process.env.EXTRA_FLAGS || '='
 // The token for the bot user - Requires a bot from discord's developer portal
 // DO NOT HARDCODE THE TOKEN HERE. STORE IT IN .ENV
 export const TOKEN: string | undefined = process.env.token;
