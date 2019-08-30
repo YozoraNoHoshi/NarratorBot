@@ -44,7 +44,7 @@ class CustomEmoji {
         .setTitle(`${fMessage('Available Emoji', BOLD)}`)
         .setColor('#00CED1')
         .setTimestamp();
-      if (i === undefined || i === 0) embed.setDescription(`Use an emoji with '${EMOJI_PREFIX}EMOJI${EMOJI_SUFFIX}`);
+      if (i === undefined || i === 0) embed.setDescription(`Use an emoji with '${EMOJI_PREFIX}EMOJI${EMOJI_SUFFIX}'`);
       else embed.setDescription(`Page ${i + 1} of ${numEmbeds}`);
       return embed;
     };

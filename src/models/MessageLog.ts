@@ -33,7 +33,8 @@ class MessageLog {
       .setColor('#2F4F4F')
       .setTimestamp();
     for (let message of log) {
-      embed.addField(`${message.author.tag} - ${message.createdAt.toDateString()}`, `${message.content}`);
+      let fieldContent = message.content || message.embeds.length > 0 && 'Embedded Message' || 'Failed to retrieve message contents.'
+      embed.addField(`${message.author.tag} - ${message.createdAt.toDateString()}`, `${fieldContent}`);
     }
     return { embed };
   }
