@@ -1,14 +1,14 @@
 {
-    "compilerOptions": {
-        "outDir": "./built",
-        "allowJs": true,
-        "target": "es5",
-        "noImplicitReturns": true,
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "strict": true,
-    },
-    "include": ["./src/**/*"],
-    "compileOnSave": true,
-    "exclude": [".eslintrc.js", ".gitignore", ".prettierrc.js", "jest.config.js"]
+  "compilerOptions": {
+    "outDir": "./built",
+    "allowJs": true,
+    "target": "es5",
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strict": true
+  },
+  "include": ["./src/**/*"],
+  "compileOnSave": true,
+  "exclude": [".eslintrc.js", ".gitignore", ".prettierrc.js", "jest.config.js"]
 }

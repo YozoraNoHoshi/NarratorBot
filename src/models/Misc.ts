@@ -18,7 +18,7 @@ class Misc {
   // rolls a virtual X sided die and returns the result. input must be positive and an actual number
   static dieRoll(message: PrefixedMessage): string {
     if (message.noPrefix.toLowerCase().includes('infinity')) return 'No.';
-    let input: number = Number(message.noPrefix) || 6;
+    let input: number = Number(message.noPrefix) || 100;
     if (input < 0) return `Maybe try something higher than ${input}?`;
     let result = Math.ceil(Math.random() * input);
     return `You rolled a ${result} out of ${input}!`;
