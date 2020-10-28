@@ -40,14 +40,15 @@ client.on(
         }
         // emoji/image response
         else if (message.content.match(emojiRegex)) {
-          let [content, flag] = message.content.split(EXTRA_FLAGS)
+          let [content, flag] = message.content.split(EXTRA_FLAGS);
           let end: number = -EMOJI_SUFFIX.length || content.length;
-          let emoji = content.trim().slice(EMOJI_PREFIX.length, end)
+          let emoji = content.trim().slice(EMOJI_PREFIX.length, end);
           let response: string | void = await CustomEmoji.emoji(emoji.trim());
           if (response) {
-            flag && flag.trim() === 'link'
-              ? message.channel.send(response)
-              : message.channel.send(new Attachment(response));
+            message.channel.send(response);
+            // flag && flag.trim() === 'link'
+            // ? message.channel.send(response)
+            // : message.channel.send(new Attachment(response));
           }
         }
       }
