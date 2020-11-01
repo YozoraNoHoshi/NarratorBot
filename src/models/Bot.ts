@@ -2,11 +2,11 @@ import { RichEmbed } from 'discord.js';
 import { MethodMap, BotCommand, SendMsgEmbed, ResponseMap, PrefixedMessage } from '../types';
 import fMessage, { BOLD, ITALICS } from '../helpers/fMessage';
 import { BOT_PREFIX } from '../config';
-import CustomEmoji from './Emoji';
+import { EMOJI_METHOD_MAP } from './Emoji';
 import Misc from './Misc';
 import PvP from './PvP';
-import MessageLog from './MessageLog';
 import Anime from './Anime';
+import { restoreMessages } from './MessageLog';
 
 class Bot {
   private static responseMap: ResponseMap = {
@@ -26,8 +26,8 @@ class Bot {
     '8': Misc.eightBall,
     lie: Misc.thatWasALie,
     duel: PvP.duel,
-    log: MessageLog.restoreMessages,
-    emoji: CustomEmoji.methodMap,
+    log: restoreMessages,
+    emoji: EMOJI_METHOD_MAP,
     anime: Anime.methodMap,
   };
 

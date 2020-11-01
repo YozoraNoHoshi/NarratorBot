@@ -5,6 +5,6 @@ let db: Promise<Db> = (async function() {
 
   await client.connect();
   return client.db(DB_NAME);
-})()
+})();
 
 export default db;

@@ -2,10 +2,10 @@
 import { TOKEN, BOT_PREFIX, EMOJI_PREFIX, EMOJI_SUFFIX, EXTRA_FLAGS } from './config';
 import { PrefMessage, SendMsgEmbed } from './types';
 import Bot from './models/Bot';
-import CustomEmoji from './models/Emoji';
+import { retrieveEmoji } from './models/Emoji';
 import client from './client';
-import MessageLog from './models/MessageLog';
-import { Message, Attachment } from 'discord.js';
+import { Message } from 'discord.js';
+import { addDeleted } from './models/MessageLog';
 
 const emojiRegex = new RegExp(`^(${EMOJI_PREFIX})(\\w+)(${EMOJI_SUFFIX})?(\\s)?(${EXTRA_FLAGS}[a-z]+)?`);
 
@@ -43,7 +43,7 @@ client.on(
           let [content, flag] = message.content.split(EXTRA_FLAGS);
           let end: number = -EMOJI_SUFFIX.length || content.length;
           let emoji = content.trim().slice(EMOJI_PREFIX.length, end);
-          let response: string | void = await CustomEmoji.emoji(emoji.trim());
+          let response: string | void = await retrieveEmoji(emoji.trim());
           if (response) {
             message.channel.send(response);
             // flag && flag.trim() === 'link'
@@ -65,7 +65,7 @@ client.on('messageDelete', (message: Message) => {
   try {
     // Ignores Bot messages and DMs
     if (!message.author.bot && message.guild) {
-      MessageLog.addDeleted(message);
+      addDeleted(message);
     }
   } catch (error) {}
 });
