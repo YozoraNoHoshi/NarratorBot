@@ -2,11 +2,12 @@ import { SendMsgEmbed, PrefixedMessage } from '../types';
 import { RichEmbed, Message } from 'discord.js';
 import admin from '../firebase';
 
-const DELETED_MESSAGES_COLLECTION = process.env.NODE_ENV === 'test' ? 'deleted-messages-est' : 'deleted-messages';
+const DELETED_MESSAGES_COLLECTION = process.env.NODE_ENV === 'test' ? 'deleted-messages-test' : 'deleted-messages';
 
 export async function addDeleted(message: Message): Promise<void> {
   let fieldContent =
     message.content || (message.embeds.length > 0 && 'Embedded Message') || 'Failed to retrieve message contents.';
+
   await admin
     .firestore()
     .collection(DELETED_MESSAGES_COLLECTION)
@@ -17,9 +18,10 @@ export async function addDeleted(message: Message): Promise<void> {
       fieldContent,
       authorTag: message.author.tag,
       authorId: message.author.id,
+      authorDiscriminator: message.author.discriminator,
       id: message.id,
       messageTime: message.createdAt.toDateString(),
-      timestamp: message.createdAt.toISOString(),
+      timestamp: message.createdAt.getTime(),
     });
 }
 

@@ -1,6 +1,9 @@
-import { addDeleted, restoreMessages } from '../MessageLog';
+import { addDeleted, clearLog, restoreMessages } from '../MessageLog';
 
 let date = new Date(2019, 0);
+beforeEach(async () => {
+  await Promise.all([clearLog('blah'), clearLog('blah2')]);
+});
 
 test('it should have 0 fields for no deleted messages', async () => {
   let response: any = await restoreMessages(makeMessage(6));
@@ -14,12 +17,14 @@ test('it should have 0 fields for no deleted messages', async () => {
 });
 
 test('It should restore messages that were deleted', async () => {
-  addDeleted(makeMessage(1));
-  addDeleted(makeMessage(2));
-  addDeleted(makeMessage(3));
-  addDeleted(makeMessage(4));
-  addDeleted(makeMessage(5));
-  addDeleted(makeMessage(7, 'asdasdasdas'));
+  await Promise.all([
+    addDeleted(makeMessage(1)),
+    addDeleted(makeMessage(2)),
+    addDeleted(makeMessage(3)),
+    addDeleted(makeMessage(4)),
+    addDeleted(makeMessage(5)),
+    addDeleted(makeMessage(7, 'blah2')),
+  ]);
 
   let response = await restoreMessages(makeMessage(6));
   expect(response).toHaveProperty('embed');
