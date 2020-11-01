@@ -2,7 +2,7 @@ import { SendMsgEmbed, PrefixedMessage } from '../types';
 import { RichEmbed, Message } from 'discord.js';
 import admin from '../firebase';
 
-const DELETED_MESSAGES_COLLECTION = 'deleted-messages';
+const DELETED_MESSAGES_COLLECTION = process.env.NODE_ENV === 'test' ? 'deleted-messages-est' : 'deleted-messages';
 
 export async function addDeleted(message: Message): Promise<void> {
   let fieldContent =
@@ -59,6 +59,8 @@ export async function restoreMessages(message: PrefixedMessage): Promise<SendMsg
       const fieldContent = d.get('fieldContent');
       embed.addField(`${d.get('authorTag')} - ${d.get('messageTime')}`, `${fieldContent}`);
     });
+
+    console.log(`thef embed`, embed);
 
     return { embed };
   } catch (error) {
