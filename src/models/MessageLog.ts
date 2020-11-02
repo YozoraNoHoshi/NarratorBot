@@ -67,8 +67,6 @@ export async function restoreMessages(message: PrefixedMessage): Promise<SendMsg
 
     await batch.commit();
 
-    console.log(`thef embed`, embed);
-
     return { embed };
   } catch (error) {
     console.error(error, message.channel.id);
