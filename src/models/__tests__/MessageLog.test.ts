@@ -46,6 +46,6 @@ function makeMessage(id: any, channel?: string): any {
     createdAt: date,
     content: 'blegh',
     deleted: true,
-    author: { username: 'another blah', tag: 'another blah#1323', id: 'more blah' },
+    author: { username: 'another blah', tag: 'another blah#1323', id: 'more blah', discriminator: 'phrasing' },
   };
 }

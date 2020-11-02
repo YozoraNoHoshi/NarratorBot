@@ -57,10 +57,15 @@ export async function restoreMessages(message: PrefixedMessage): Promise<SendMsg
       .setColor('#2F4F4F')
       .setTimestamp();
 
+    const batch = admin.firestore().batch();
+
     log.docs.forEach(d => {
       const fieldContent = d.get('fieldContent');
       embed.addField(`${d.get('authorTag')} - ${d.get('messageTime')}`, `${fieldContent}`);
+      batch.delete(d.ref);
     });
+
+    await batch.commit();
 
     console.log(`thef embed`, embed);
 
