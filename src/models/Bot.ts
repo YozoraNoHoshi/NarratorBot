@@ -1,12 +1,13 @@
 import { RichEmbed } from 'discord.js';
 import { MethodMap, BotCommand, SendMsgEmbed, ResponseMap, PrefixedMessage } from '../types';
 import fMessage, { BOLD, ITALICS } from '../helpers/fMessage';
-import { BOT_PREFIX } from '../config';
+import { ADMIN_USER_ID, BOT_PREFIX } from '../config';
 import { EMOJI_METHOD_MAP } from './Emoji';
 import Misc from './Misc';
 import PvP from './PvP';
 import Anime from './Anime';
 import { restoreMessages } from './MessageLog';
+import AdminMethods from './Admin';
 
 class Bot {
   private static responseMap: ResponseMap = {
@@ -29,6 +30,7 @@ class Bot {
     log: restoreMessages,
     emoji: EMOJI_METHOD_MAP,
     anime: Anime.methodMap,
+    admin: AdminMethods,
   };
 
   // This method allows for dynamic calling of other methods based on the incoming message.
@@ -42,6 +44,10 @@ class Bot {
     // console.log('command:', command)
     if (command === 'help') {
       return await Bot.helpWanted(message, methodMap, methodMap.help);
+    }
+    if (command === 'admin' && message.author.id !== ADMIN_USER_ID) {
+      const sipglare = message.guild.emojis.find(e => e.name === 'sipglare').toString();
+      return `Who tf are you ${sipglare}`;
     }
     if (methodMap.hasOwnProperty(command)) {
       // Action is of type BotCommand. Any is there for the case where "help" is triggered, which is handled above.
@@ -69,7 +75,7 @@ class Bot {
       .setTimestamp();
     let noDescription: string = 'No description provided.';
     for (let key in methodMap) {
-      if (key !== 'help') {
+      if (key !== 'help' && key !== 'admin') {
         let desc: string =
           typeof responseMap[key] === 'string' ? responseMap[key] || noDescription : `${key} has its own submenu`;
         embed.addField(`${fMessage(key, BOLD)}`, fMessage(desc, ITALICS));
