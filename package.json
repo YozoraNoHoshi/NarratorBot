@@ -8,11 +8,6 @@
     "test": "jest",
     "postinstall": "npx tsc"
   },
-  "husky": {
-    "hooks": {
-      "pre-push": "npm test"
-    }
-  },
   "author": "",
   "license": "ISC",
   "dependencies": {

@@ -9,7 +9,7 @@ import Anime from './Anime';
 import { restoreMessages } from './MessageLog';
 import AdminMethods from './Admin';
 import BankMethods from './Bank';
-import { getEmojiString } from './helpers';
+import { getEmojiString } from '../helpers';
 
 class Bot {
   private static responseMap: ResponseMap = {
