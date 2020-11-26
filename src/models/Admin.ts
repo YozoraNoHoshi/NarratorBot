@@ -1,10 +1,11 @@
 import admin from '../firebase';
+import { getEmojiString } from '../helpers';
 import { MethodMap, PrefixedMessage } from '../types';
 
-export async function populateUsers(message: PrefixedMessage): Promise<void> {
+export async function populateUsers(message: PrefixedMessage): Promise<string | undefined> {
   const batch = admin.firestore().batch();
-  const members = await message.guild?.members.fetch()
-  members?.forEach(m =>{
+  const members = await message.guild?.members.fetch();
+  members?.forEach((m) => {
     if (m.user.bot) return;
     const memberObject = {
       id: m.id,
@@ -12,26 +13,24 @@ export async function populateUsers(message: PrefixedMessage): Promise<void> {
       displayName: m.displayName,
       username: m.user.username,
     };
-    const user = admin
-      .firestore()
-      .collection('users')
-      .doc(m.id);
+    const user = admin.firestore().collection('users').doc(m.id);
     batch.set(user, memberObject, { merge: true });
   });
   await batch.commit();
+  return getEmojiString('blobderpy', message);
 }
 
 export async function addCredits(message: PrefixedMessage): Promise<string | null> {
-  const amount: string = message.noPrefix.split(' ').find(s => !isNaN(+s)) || '100';
+  const amount: string = message.noPrefix.split(' ').find((s) => !isNaN(+s)) || '100';
   const batch = admin.firestore().batch();
   if (message.mentions.users.size > 0) {
-    message.mentions.users.forEach(u => {
+    message.mentions.users.forEach((u) => {
       addCredsToUser(batch, u.id, amount);
     });
   }
   if (message.mentions.roles.size > 0) {
-    message.mentions.roles.forEach(r =>
-      r.members.forEach(u => {
+    message.mentions.roles.forEach((r) =>
+      r.members.forEach((u) => {
         addCredsToUser(batch, u.id, amount);
       }),
     );
@@ -42,10 +41,7 @@ export async function addCredits(message: PrefixedMessage): Promise<string | nul
 }
 
 function addCredsToUser(batch: FirebaseFirestore.WriteBatch, userId: string, amount: string) {
-  const ref = admin
-    .firestore()
-    .collection('users')
-    .doc(userId);
+  const ref = admin.firestore().collection('users').doc(userId);
 
   batch.set(ref, { credits: admin.firestore.FieldValue.increment(+amount || 100) }, { merge: true });
 }
