@@ -1,14 +1,14 @@
 // import db from '../db';
 import createError from '../helpers/createError';
-import { RichEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import fMessage, { BOLD } from '../helpers/fMessage';
 import { SendMsgEmbed, MethodMap, ResponseMap, PrefixedMessage } from '../types';
 import { EMOJI_PREFIX, EMOJI_SUFFIX } from '../config';
 import admin from '../firebase';
 
 type CreateEmbedFunction = {
-  (): RichEmbed;
-  (i: number, numEmbeds: number): RichEmbed;
+  (): MessageEmbed;
+  (i: number, numEmbeds: number): MessageEmbed;
 };
 
 export const EMOJI_RESPONSE_LIST: ResponseMap = {
@@ -39,7 +39,7 @@ function emojiListCreateEmbeds(
 ): SendMsgEmbed | SendMsgEmbed[] {
   const result = snap.docs;
   const createEmbed: CreateEmbedFunction = (i?: number, numEmbeds?: number) => {
-    let embed = new RichEmbed()
+    let embed = new MessageEmbed()
       .setTitle(`${fMessage('Available Emoji', BOLD)}`)
       .setColor('#00CED1')
       .setTimestamp();

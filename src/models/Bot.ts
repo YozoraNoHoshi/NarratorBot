@@ -1,4 +1,4 @@
-import { RichEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import { MethodMap, BotCommand, SendMsgEmbed, ResponseMap, PrefixedMessage } from '../types';
 import fMessage, { BOLD, ITALICS } from '../helpers/fMessage';
 import { ADMIN_USER_ID, BOT_PREFIX } from '../config';
@@ -71,7 +71,7 @@ class Bot {
     methodMap: MethodMap,
     responseMap: any = Bot.responseMap,
   ): SendMsgEmbed {
-    let embed: RichEmbed = new RichEmbed()
+    let embed: MessageEmbed = new MessageEmbed()
       .setTitle(`${fMessage('Available Commands', BOLD)}`)
       .setColor('#00CED1')
       .setDescription(`Commands should be prefixed with '${BOT_PREFIX}'`)

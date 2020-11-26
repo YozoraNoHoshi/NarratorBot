@@ -1,6 +1,6 @@
 // import discord = require('discord.js');
 import { TOKEN, BOT_PREFIX, EMOJI_PREFIX, EMOJI_SUFFIX, EXTRA_FLAGS } from './config';
-import { PrefMessage, SendMsgEmbed } from './types';
+import { PrefixedMessage, PrefMessage, SendMsgEmbed } from './types';
 import Bot from './models/Bot';
 import { retrieveEmoji } from './models/Emoji';
 import client from './client';
@@ -11,12 +11,13 @@ const emojiRegex = new RegExp(`^(${EMOJI_PREFIX})(\\w+)(${EMOJI_SUFFIX})?(\\s)?(
 
 client.on('ready', () => {
   console.log('Drain your glass!');
-  client.user.setActivity(process.env.ACTIVITY_LABEL || 'anime.', { type: 'WATCHING' });
+  client.user!.setActivity(process.env.ACTIVITY_LABEL || 'anime.', { type: 'WATCHING' });
 });
 
 client.on(
   'message',
-  async (message: Message & PrefMessage): Promise<void> => {
+  async (rawMessage: Message): Promise<void> => {
+    const message: PrefixedMessage = rawMessage as PrefixedMessage;
     try {
       if (message.author === client.user) {
         // If message received is from this user and has a reaction from this user, activate the reaction await
@@ -60,11 +61,11 @@ client.on(
   },
 );
 
-client.on('messageDelete', (message: Message) => {
+client.on('messageDelete', (message) => {
   // add it to the messageLog class via method
   try {
     // Ignores Bot messages and DMs
-    if (!message.author.bot && message.guild) {
+    if (!message.author?.bot && message.guild) {
       addDeleted(message);
     }
   } catch (error) {}

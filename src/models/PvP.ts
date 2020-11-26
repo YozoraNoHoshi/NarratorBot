@@ -1,6 +1,6 @@
 import { SendMsgEmbed, Player, PrefixedMessage } from '../types';
 import createError from '../helpers/createError';
-import { RichEmbed, User } from 'discord.js';
+import { MessageEmbed, User } from 'discord.js';
 import fMessage, { BOLD, ITALICS } from '../helpers/fMessage';
 import randomChoice from '../helpers/randomChoice';
 import client from '../client';
@@ -29,7 +29,7 @@ class PvP {
     // initiates a duel between two users, the sender of the message + the first user mentioned in the message.
     let player1: User = message.author;
     // Cannot duel bots except this one.
-    let player2: User = message.mentions.users.filter((user: any) => user === client.user || !user.bot).first();
+    let player2: User = message.mentions.users.filter((user: any) => user === client.user || !user.bot).first()!;
     if (!player2) throw createError('You must duel against someone!', 400);
     // Dueling the bot is rigged, player will always lose by the slimmest of margins... or get absolutely slaughtered.
 
@@ -41,7 +41,7 @@ class PvP {
       ITALICS,
     )}`;
     // Initial settings for the duel, randomizes who goes first
-    let embed: RichEmbed = PvP.duelRound(
+    let embed: MessageEmbed = PvP.duelRound(
       {
         player1: { username: fMessage(player1.username, ITALICS), hp: playerHP },
         player2: {
@@ -49,7 +49,7 @@ class PvP {
           hp: player2 === client.user ? 9999 : playerHP,
         },
       },
-      new RichEmbed()
+      new MessageEmbed()
         .setTitle(fMessage(title, BOLD))
         .setColor('#D2691E')
         .setTimestamp(),
@@ -65,7 +65,7 @@ class PvP {
     embed: any,
     p2Turn: boolean,
     bot: boolean,
-  ): RichEmbed {
+  ): MessageEmbed {
     // base case, prints result on the top
     if (players.player1.hp <= 0 || players.player2.hp <= 0 || embed.fields.length >= 24) {
       return embed.setDescription(`${PvP.dispHP(players.player1)} - ${PvP.dispHP(players.player2)}`);

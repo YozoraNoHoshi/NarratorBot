@@ -1,5 +1,5 @@
 import { MethodMap, SendMsgEmbed, ResponseMap, PrefixedMessage } from '../types';
-import { RichEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import axios, { AxiosResponse } from 'axios';
 import { getByAiring, getBySeason, searchAnime } from '../queries/Anime';
 import createError from '../helpers/createError';
@@ -30,7 +30,7 @@ class Anime {
     let result = await Anime.requestToAniList(getBySeason, variables);
     let { pageInfo, media } = result.Page;
     // format by page, reactions will be needed most likely
-    let embed = new RichEmbed()
+    let embed = new MessageEmbed()
       .setTitle(`Anime Season ${variables.season} ${variables.seasonYear}`)
       .setFooter(`Page ${pageInfo.currentPage} of ${pageInfo.lastPage}`)
       .setTimestamp();
@@ -49,7 +49,7 @@ class Anime {
     let page: number = Number(extract[1]) || 1;
     let result = await Anime.requestToAniList(getByAiring, { notYetAired: true, episode: 26, page });
     let { pageInfo, airingSchedules } = result.Page;
-    let embed = new RichEmbed()
+    let embed = new MessageEmbed()
       .setTitle('Currently Airing Anime')
       .setFooter(`Page ${pageInfo.currentPage} of ${pageInfo.lastPage}`)
       .setTimestamp();
@@ -72,7 +72,7 @@ class Anime {
     let result = await Anime.requestToAniList(searchAnime, { search: message.noPrefix });
     let anime: any = result.Media;
     let date = new Date(`${anime.startDate.year} ${anime.startDate.month} ${anime.startDate.day}`);
-    let embed = new RichEmbed()
+    let embed = new MessageEmbed()
       .setAuthor(`Studio: ${anime.studios.nodes[0].name}`)
       .setTitle(Anime.formatTitle(anime.title, anime.format))
       .setDescription(anime.description)

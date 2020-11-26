@@ -1,4 +1,4 @@
-import { Message, RichEmbed, MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 
 // Either a function or another MethodMap which indicates a submenu
 export type MethodMap = { [name: string]: BotCommand };
@@ -8,7 +8,7 @@ export type BotCommand = CommandFunction | MethodMap | ResponseMap;
 
 export type Player = { username: string; hp: number };
 
-export type SendMsgEmbed = { embed: RichEmbed | MessageEmbed };
+export type SendMsgEmbed = { embed: MessageEmbed };
 export type DeletedMessage = { deleted: boolean };
 export type PrefMessage = { noPrefix: string };
 export type PrefixedMessage = Message & PrefMessage;
