@@ -4,6 +4,7 @@ import { MethodMap, PrefixedMessage } from '../types';
 export async function populateUsers(message: PrefixedMessage): Promise<void> {
   const batch = admin.firestore().batch();
   message.guild.members.forEach(m => {
+    if (m.user.bot) return;
     const memberObject = {
       id: m.id,
       nickname: m.nickname,

@@ -8,6 +8,8 @@ import PvP from './PvP';
 import Anime from './Anime';
 import { restoreMessages } from './MessageLog';
 import AdminMethods from './Admin';
+import BankMethods from './Bank';
+import { getEmojiString } from './helpers';
 
 class Bot {
   private static responseMap: ResponseMap = {
@@ -31,6 +33,7 @@ class Bot {
     emoji: EMOJI_METHOD_MAP,
     anime: Anime.methodMap,
     admin: AdminMethods,
+    bank: BankMethods,
   };
 
   // This method allows for dynamic calling of other methods based on the incoming message.
@@ -46,8 +49,8 @@ class Bot {
       return await Bot.helpWanted(message, methodMap, methodMap.help);
     }
     if (command === 'admin' && message.author.id !== ADMIN_USER_ID) {
-      const sipglare = message.guild.emojis.find(e => e.name === 'sipglare').toString();
-      return `Who tf are you ${sipglare}`;
+      const emoji = getEmojiString('sipglare', message);
+      return `Who tf are you ${emoji}`;
     }
     if (methodMap.hasOwnProperty(command)) {
       // Action is of type BotCommand. Any is there for the case where "help" is triggered, which is handled above.

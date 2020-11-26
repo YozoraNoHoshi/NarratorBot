@@ -2,7 +2,7 @@
 // require('dotenv').config();
 
 // The prefix used to trigger commands
-export const BOT_PREFIX: string = process.env.BOT_PREFIX || '$';
+export const BOT_PREFIX: string = process.env.BOT_PREFIX || '>';
 export const EMOJI_PREFIX: string = process.env.EMOJI_PREFIX || '--';
 export const EMOJI_SUFFIX: string = process.env.EMOJI_SUFFIX || '';
 export const EXTRA_FLAGS: string = process.env.EXTRA_FLAGS || '=';
