@@ -10,5 +10,5 @@ export function getEmojiString(name: string, message: PrefixedMessage | Message)
 }
 
 export function emoji(name: string, message: PrefixedMessage | Message) {
-  return message.guild?.emojis.resolve(name)?.toString();
+  return message.guild?.emojis.resolve(name)?.toString() || '';
 }
