@@ -9,7 +9,7 @@ import Anime from './Anime';
 import { restoreMessages } from './MessageLog';
 import AdminMethods from './Admin';
 import BankMethods from './Bank';
-import { getEmojiString } from '../helpers';
+import { emoji } from '../helpers';
 
 class Bot {
   private static responseMap: ResponseMap = {
@@ -49,8 +49,8 @@ class Bot {
       return await Bot.helpWanted(message, methodMap, methodMap.help);
     }
     if (command === 'admin' && message.author.id !== ADMIN_USER_ID) {
-      const emoji = getEmojiString('sipglare', message);
-      return `Who tf are you ${emoji}`;
+      const resEmoji = emoji('sipglare', message);
+      return `Who tf are you ${resEmoji}`;
     }
     if (methodMap.hasOwnProperty(command)) {
       // Action is of type BotCommand. Any is there for the case where "help" is triggered, which is handled above.

@@ -1,15 +1,15 @@
 import admin from '../firebase';
-import { getEmojiString } from '../helpers';
+import { emoji } from '../helpers';
 import randomChoice from '../helpers/randomChoice';
 import { MethodMap, PrefixedMessage } from '../types';
 
 export function admin401Response(message: PrefixedMessage) {
   const responsePool = [
-    `Who tf are you ${getEmojiString('sipglare', message)}`,
-    `${getEmojiString('blobderpy', message)}`,
-    `I dont recognize that command ${getEmojiString('blobstare', message)}`,
-    `${getEmojiString('keq', message)}HASHIRE SORI YO\nKAZE NO YO NI\nTSUKIMIHARA WO\nPADORU PADORU`,
-    `${getEmojiString('CDomWut', message)}`,
+    `Who tf are you ${emoji('sipglare', message)}`,
+    `${emoji('blobderpy', message)}`,
+    `I dont recognize that command ${emoji('blobstare', message)}`,
+    `${emoji('keq', message)}HASHIRE SORI YO\nKAZE NO YO NI\nTSUKIMIHARA WO\nPADORU PADORU`,
+    `${emoji('CDomWut', message)}`,
   ];
   return randomChoice(responsePool);
 }
@@ -28,7 +28,7 @@ export async function populateUsers(message: PrefixedMessage): Promise<string | 
     batch.set(user, memberObject, { merge: true });
   });
   await batch.commit();
-  return getEmojiString('blobderpy', message);
+  return emoji('blobderpy', message);
 }
 
 export async function addCredits(message: PrefixedMessage): Promise<string | null> {
