@@ -5,10 +5,10 @@ export function getUserDisplayName(id: string, message: PrefixedMessage | Messag
   return message.guild?.member(id)?.displayName;
 }
 
-export function getEmojiString(name: string, message: PrefixedMessage | Message): string | undefined {
-  return message.guild?.emojis.cache.find((e) => e.name === name)?.toString();
+export function emoji(name: string, message: PrefixedMessage | Message): string | undefined {
+  return message.guild?.emojis.cache.find((e) => e.name === name)?.toString() || '';
 }
 
-export function emoji(name: string, message: PrefixedMessage | Message) {
+export function resolveEmoji(name: string, message: PrefixedMessage | Message) {
   return message.guild?.emojis.resolve(name)?.toString() || '';
 }
