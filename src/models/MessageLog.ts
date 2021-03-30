@@ -55,7 +55,7 @@ export async function restoreMessages(message: PrefixedMessage): Promise<SendMsg
 
     const batch = admin.firestore().batch();
 
-    log.docs.forEach((d) => {
+    [...log.docs].reverse().forEach((d) => {
       const fieldContent = d.get('fieldContent');
       embed.addField(`${d.get('authorTag')} - ${d.get('messageTime')}`, `${fieldContent}`);
       batch.delete(d.ref);
