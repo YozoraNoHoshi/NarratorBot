@@ -1,6 +1,18 @@
 import admin from '../firebase';
 import { getEmojiString } from '../helpers';
+import randomChoice from '../helpers/randomChoice';
 import { MethodMap, PrefixedMessage } from '../types';
+
+export function admin401Response(message: PrefixedMessage) {
+  const responsePool = [
+    `Who tf are you ${getEmojiString('sipglare', message)}`,
+    `${getEmojiString('blobderpy', message)}`,
+    `I dont recognize that command ${getEmojiString('blobstare', message)}`,
+    `${getEmojiString('keq', message)}HASHIRE SORI YO\nKAZE NO YO NI\nTSUKIMIHARA WO\nPADORU PADORU`,
+    `${getEmojiString('CDomWut', message)}`,
+  ];
+  return randomChoice(responsePool);
+}
 
 export async function populateUsers(message: PrefixedMessage): Promise<string | undefined> {
   const batch = admin.firestore().batch();

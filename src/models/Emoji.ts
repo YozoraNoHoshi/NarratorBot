@@ -3,8 +3,9 @@ import createError from '../helpers/createError';
 import { MessageEmbed } from 'discord.js';
 import fMessage, { BOLD } from '../helpers/fMessage';
 import { SendMsgEmbed, MethodMap, ResponseMap, PrefixedMessage } from '../types';
-import { EMOJI_PREFIX, EMOJI_SUFFIX } from '../config';
+import { ADMIN_USER_ID, EMOJI_PREFIX, EMOJI_SUFFIX } from '../config';
 import admin from '../firebase';
+import { admin401Response } from './Admin';
 
 type CreateEmbedFunction = {
   (): MessageEmbed;
@@ -24,10 +25,7 @@ export const EMOJI_METHOD_MAP: MethodMap = {
 };
 
 async function getEmojiList(message: PrefixedMessage): Promise<SendMsgEmbed | SendMsgEmbed[]> {
-  const emojiSnap = await admin
-    .firestore()
-    .collection('emojis')
-    .get();
+  const emojiSnap = await admin.firestore().collection('emojis').get();
   const numEmbeds = Math.ceil(emojiSnap.size / 25);
 
   return emojiListCreateEmbeds(emojiSnap, numEmbeds);
@@ -74,25 +72,20 @@ function emojiListCreateEmbeds(
 }
 
 async function addEmoji(message: PrefixedMessage): Promise<string | void> {
+  if (message.author.id !== ADMIN_USER_ID) return admin401Response(message);
+
   let newEmoji: string[] = message.noPrefix.split(' ');
 
-  await admin
-    .firestore()
-    .collection('emojis')
-    .doc(newEmoji[0])
-    .set({ image: newEmoji[1], name: newEmoji[0] });
+  await admin.firestore().collection('emojis').doc(newEmoji[0]).set({ image: newEmoji[1], name: newEmoji[0] });
 
   return `\`Added the ${newEmoji[0]} emoji.\``;
 }
 
 // deletes an emoji from the database. requires the name of the emoji
 async function deleteEmoji(message: PrefixedMessage): Promise<string> {
+  if (message.author.id !== ADMIN_USER_ID) return admin401Response(message);
   try {
-    await admin
-      .firestore()
-      .collection('emojis')
-      .doc(message.noPrefix)
-      .delete();
+    await admin.firestore().collection('emojis').doc(message.noPrefix).delete();
 
     return `\`Deleted emoji ${message.noPrefix}\``;
   } catch (error) {
@@ -103,11 +96,7 @@ async function deleteEmoji(message: PrefixedMessage): Promise<string> {
 // this command is accessed with a different syntax than normal commands.
 // Do not add this method to the methodMap
 export async function retrieveEmoji(name: string): Promise<string> {
-  let result = await admin
-    .firestore()
-    .collection('emojis')
-    .doc(name)
-    .get();
+  let result = await admin.firestore().collection('emojis').doc(name).get();
 
   if (!result.exists) {
     throw createError(`Could not find emoji ${name}. Check to see if you spelled it correctly`, 404);
