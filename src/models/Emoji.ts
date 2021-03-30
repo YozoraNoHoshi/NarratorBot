@@ -6,11 +6,14 @@ import { SendMsgEmbed, MethodMap, ResponseMap, PrefixedMessage } from '../types'
 import { ADMIN_USER_ID, EMOJI_PREFIX, EMOJI_SUFFIX } from '../config';
 import admin from '../firebase';
 import { admin401Response } from './Admin';
+import { getEmojiString } from '../helpers';
 
 type CreateEmbedFunction = {
   (): MessageEmbed;
   (i: number, numEmbeds: number): MessageEmbed;
 };
+
+const PROTECTED_EMOJI_LIST: Set<string> = new Set(['shi']);
 
 export const EMOJI_RESPONSE_LIST: ResponseMap = {
   add: 'Adds an emoji to the store.',
@@ -72,9 +75,12 @@ function emojiListCreateEmbeds(
 }
 
 async function addEmoji(message: PrefixedMessage): Promise<string | void> {
-  if (message.author.id !== ADMIN_USER_ID) return admin401Response(message);
+  // if (message.author.id !== ADMIN_USER_ID) return admin401Response(message);
 
   let newEmoji: string[] = message.noPrefix.split(' ');
+
+  if (PROTECTED_EMOJI_LIST.has(newEmoji[0]))
+    return `${getEmojiString('derpypeek', message)} I bet you thought that'd work.`;
 
   await admin.firestore().collection('emojis').doc(newEmoji[0]).set({ image: newEmoji[1], name: newEmoji[0] });
 
@@ -83,7 +89,8 @@ async function addEmoji(message: PrefixedMessage): Promise<string | void> {
 
 // deletes an emoji from the database. requires the name of the emoji
 async function deleteEmoji(message: PrefixedMessage): Promise<string> {
-  if (message.author.id !== ADMIN_USER_ID) return admin401Response(message);
+  // if (message.author.id !== ADMIN_USER_ID) return admin401Response(message);
+  if (PROTECTED_EMOJI_LIST.has(message.noPrefix)) return `${getEmojiString('bolb', message)} This emoji never existed.`;
   try {
     await admin.firestore().collection('emojis').doc(message.noPrefix).delete();
 
