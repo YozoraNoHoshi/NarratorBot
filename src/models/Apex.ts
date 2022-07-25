@@ -80,12 +80,18 @@ class ApexLegendsCommands {
     const { data }: { data: ApexCraftingRotation } = await Axios.get(url);
 
     const embed = new MessageEmbed().setTitle('Apex Legends Crafting Rotation');
-    data.forEach((bundle) => {
-      embed.addField(
-        `${bundle.bundle} (${bundle.bundleType})`,
-        `${bundle.bundleContent.map((item) => `${item.itemType.name} (${item.cost})`).join('\n')}`,
-      );
-    });
+
+    data
+      .filter(
+        (bundle) =>
+          bundle.bundleType !== 'permanent' || bundle.bundle === 'weapon_one' || bundle.bundle === 'weapon_two',
+      )
+      .forEach((bundle: ApexCraftingBundle) => {
+        embed.addField(
+          `${bundle.bundleType} (${bundle.startDate} - ${bundle.endDate})`,
+          `${bundle.bundleContent.map((item: ApexBundleContent) => `${item.itemType.name} (${item.cost})`).join(', ')}`,
+        );
+      });
 
     embed.setColor('#0094FF');
 
