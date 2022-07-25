@@ -71,6 +71,7 @@ class ApexLegendsCommands {
     embed.addField('Current Map', `${current.map} (${current.remainingTimer})`);
     embed.addField('Next Map', `${next.map} for ${next.DurationInMinutes} minutes.`);
     embed.setImage(current.asset);
+    embed.setColor('#0094FF');
     return { embed };
   }
 
@@ -85,6 +86,8 @@ class ApexLegendsCommands {
         `${bundle.bundleContent.map((item) => `${item.itemType.name} (${item.cost})`).join('\n')}`,
       );
     });
+
+    embed.setColor('#0094FF');
 
     return { embed };
   }
