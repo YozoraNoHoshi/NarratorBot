@@ -10,6 +10,7 @@ import { restoreMessages } from './MessageLog';
 import AdminMethods from './Admin';
 import BankMethods from './Bank';
 import { emoji } from '../helpers';
+import ApexLegendsCommands from './Apex';
 
 class Bot {
   private static responseMap: ResponseMap = {
@@ -34,6 +35,7 @@ class Bot {
     anime: Anime.methodMap,
     admin: AdminMethods,
     bank: BankMethods,
+    apex: ApexLegendsCommands.methodMap,
   };
 
   // This method allows for dynamic calling of other methods based on the incoming message.

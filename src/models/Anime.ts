@@ -94,7 +94,7 @@ class Anime {
     try {
       let result: AxiosResponse<any> = await axios.post(Anime.BASE_URL, { query, variables }, Anime.options);
       return result.data.data;
-    } catch (error) {
+    } catch (error: any) {
       let { response } = error;
       let errorMsg =
         response && response.data ? response.data.errors[0].message : 'An error occurred in making the request.';

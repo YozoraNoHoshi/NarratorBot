@@ -53,7 +53,7 @@ client.on(
           }
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       // if something blows up, bot doesn't crash
       error.status = error.status || 500;
       message.channel.send(`\`Error ${error.status}: ${error.message}\``);
