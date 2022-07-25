@@ -54,10 +54,12 @@ interface ApexBundleContent {
 class ApexLegendsCommands {
   static responseMap: ResponseMap = {
     map: 'Display the current map rotation',
+    craft: 'Display the current crafting rotation',
   };
   static methodMap: MethodMap = {
     help: ApexLegendsCommands.responseMap,
     map: ApexLegendsCommands.mapRotation,
+    craft: ApexLegendsCommands.craftingRotation,
   };
 
   static async mapRotation(): Promise<SendMsgEmbed> {
