@@ -14,8 +14,9 @@ client.on('ready', () => {
   client.user!.setActivity(process.env.ACTIVITY_LABEL || 'anime.', { type: ActivityType.Watching });
 });
 
-client.on('messageCreate', async (rawMessage: Message): Promise<void> => {
-  // console.log('Message', rawMessage.content);
+client.on('messageCreate', async (rawMessage): Promise<void> => {
+  console.log('Message', rawMessage.content);
+  console.log(`thef rawMessage`, JSON.stringify(rawMessage, null, 2));
   const message: PrefixedMessage = rawMessage as PrefixedMessage;
   try {
     if (message.author === client.user) {
