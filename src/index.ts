@@ -43,7 +43,7 @@ client.on('messageCreate', async (rawMessage: Message): Promise<void> => {
         let [content, flag] = message.content.split(EXTRA_FLAGS);
         let end: number = -EMOJI_SUFFIX.length || content.length;
         let emoji = content.trim().slice(EMOJI_PREFIX.length, end);
-        let response: string | void = await retrieveEmoji(emoji.trim());
+        let response: string | void = await retrieveEmoji(emoji.trim(), message);
         if (response) {
           message.channel.send(response);
           // flag && flag.trim() === 'link'

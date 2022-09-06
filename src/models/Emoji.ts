@@ -6,6 +6,7 @@ import { SendMsgEmbed, MethodMap, ResponseMap, PrefixedMessage } from '../types'
 import { EMOJI_PREFIX, EMOJI_SUFFIX } from '../config';
 import admin from '../firebase';
 import { emoji } from '../helpers';
+import randomChoice from '../helpers/randomChoice';
 
 type CreateEmbedFunction = {
   (): EmbedBuilder;
@@ -98,12 +99,22 @@ async function deleteEmoji(message: PrefixedMessage): Promise<string> {
 
 // this command is accessed with a different syntax than normal commands.
 // Do not add this method to the methodMap
-export async function retrieveEmoji(name: string): Promise<string> {
+export async function retrieveEmoji(name: string, message: PrefixedMessage): Promise<string> {
   let result = await admin.firestore().collection('emojis').doc(name).get();
 
   if (!result.exists) {
-    throw createError(`Could not find emoji ${name}. Check to see if you spelled it correctly`, 404);
+    return emoji401Response(message);
+    // throw createError(`Could not find emoji ${name}. Check to see if you spelled it correctly`, 404);
   }
 
   return result.get('image');
+}
+
+export function emoji401Response(message: PrefixedMessage) {
+  const responsePool = [
+    `I don't have that one ${emoji('blobderpy', message)}`,
+    `${emoji('CDomWut', message)}`,
+    `${emoji('sipglare', message)}`,
+  ];
+  return randomChoice(responsePool);
 }
