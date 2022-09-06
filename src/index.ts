@@ -17,6 +17,7 @@ client.on('ready', () => {
 client.on(
   'message',
   async (rawMessage: Message): Promise<void> => {
+    console.log('Message', rawMessage.content);
     const message: PrefixedMessage = rawMessage as PrefixedMessage;
     try {
       if (message.author === client.user) {
