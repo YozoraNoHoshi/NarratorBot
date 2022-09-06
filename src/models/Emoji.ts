@@ -103,7 +103,9 @@ export async function retrieveEmoji(name: string, message: PrefixedMessage): Pro
   let result = await admin.firestore().collection('emojis').doc(name).get();
 
   if (!result.exists) {
-    return emoji401Response(message);
+    const response = emoji401Response(message);
+    console.log(name, response);
+    return response;
     // throw createError(`Could not find emoji ${name}. Check to see if you spelled it correctly`, 404);
   }
 

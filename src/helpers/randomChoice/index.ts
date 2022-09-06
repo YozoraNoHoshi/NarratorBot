@@ -1,4 +1,4 @@
-export default function randomChoice(list: any[]): any {
-    let random: number = Math.floor(Math.random() * list.length);
-    return list[random];
+export default function randomChoice<T>(list: T[]): T {
+  let random: number = Math.floor(Math.random() * list.length);
+  return list[random];
 }
