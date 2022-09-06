@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import { APEX_CRAFTING_ROTATION_URL, APEX_MAP_ROTATION_URL } from '../constants';
 import { ResponseMap, MethodMap, SendMsgEmbed } from '../types';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 
 interface ApexMapResponse {
   current: {
@@ -67,19 +67,19 @@ class ApexLegendsCommands {
     const { data }: { data: ApexMapResponse } = await Axios.get(url);
     const { current, next } = data;
 
-    const embed = new MessageEmbed().setTitle('Apex Legends Map Rotation');
-    embed.addField('Current Map', `${current.map} (${current.remainingTimer})`);
-    embed.addField('Next Map', `${next.map} for ${next.DurationInMinutes} minutes.`);
+    const embed = new EmbedBuilder().setTitle('Apex Legends Map Rotation');
+    embed.addFields({ name: 'Current Map', value: `${current.map} (${current.remainingTimer})` });
+    embed.addFields({ name: 'Next Map', value: `${next.map} for ${next.DurationInMinutes} minutes.` });
     embed.setImage(current.asset);
     embed.setColor('#0094FF');
-    return { embed };
+    return { embeds: [embed] };
   }
 
   static async craftingRotation(): Promise<SendMsgEmbed> {
     const url = `${APEX_CRAFTING_ROTATION_URL}?auth=${process.env.APEX_API_KEY}`;
     const { data }: { data: ApexCraftingRotation } = await Axios.get(url);
 
-    const embed = new MessageEmbed().setTitle('Apex Legends Crafting Rotation');
+    const embed = new EmbedBuilder().setTitle('Apex Legends Crafting Rotation');
 
     data
       .filter(
@@ -87,15 +87,17 @@ class ApexLegendsCommands {
           bundle.bundleType !== 'permanent' || bundle.bundle === 'weapon_one' || bundle.bundle === 'weapon_two',
       )
       .forEach((bundle: ApexCraftingBundle) => {
-        embed.addField(
-          `${bundle.bundleType} (${bundle.startDate} - ${bundle.endDate})`,
-          `${bundle.bundleContent.map((item: ApexBundleContent) => `${item.itemType.name} (${item.cost})`).join(', ')}`,
-        );
+        embed.addFields({
+          name: `${bundle.bundleType} (${bundle.startDate} - ${bundle.endDate})`,
+          value: `${bundle.bundleContent
+            .map((item: ApexBundleContent) => `${item.itemType.name} (${item.cost})`)
+            .join(', ')}`,
+        });
       });
 
     embed.setColor('#0094FF');
 
-    return { embed };
+    return { embeds: [embed] };
   }
 }
 

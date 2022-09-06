@@ -1,5 +1,5 @@
 import { MethodMap, SendMsgEmbed, ResponseMap, PrefixedMessage } from '../types';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import axios, { AxiosResponse } from 'axios';
 import { getByAiring, getBySeason, searchAnime } from '../queries/Anime';
 import createError from '../helpers/createError';
@@ -30,18 +30,18 @@ class Anime {
     let result = await Anime.requestToAniList(getBySeason, variables);
     let { pageInfo, media } = result.Page;
     // format by page, reactions will be needed most likely
-    let embed = new MessageEmbed()
+    let embed = new EmbedBuilder()
       .setTitle(`Anime Season ${variables.season} ${variables.seasonYear}`)
-      .setFooter(`Page ${pageInfo.currentPage} of ${pageInfo.lastPage}`)
+      .setFooter({ text: `Page ${pageInfo.currentPage} of ${pageInfo.lastPage}` })
       .setTimestamp();
     for (let anime of media) {
       let title: string = Anime.formatTitle(anime.title, anime.format);
       let desc: string = `Genres: ${anime.genres.join(', ')}\nEpisodes: ${anime.episodes}\nStatus: ${
         anime.status
       }\n${Anime.aniListLink(anime.id)}`;
-      embed.addField(title, desc);
+      embed.addFields({ name: title, value: desc });
     }
-    return { embed };
+    return { embeds: [embed] };
   }
 
   static async getAiring(message: PrefixedMessage): Promise<SendMsgEmbed> {
@@ -49,9 +49,9 @@ class Anime {
     let page: number = Number(extract[1]) || 1;
     let result = await Anime.requestToAniList(getByAiring, { notYetAired: true, episode: 26, page });
     let { pageInfo, airingSchedules } = result.Page;
-    let embed = new MessageEmbed()
+    let embed = new EmbedBuilder()
       .setTitle('Currently Airing Anime')
-      .setFooter(`Page ${pageInfo.currentPage} of ${pageInfo.lastPage}`)
+      .setFooter({ text: `Page ${pageInfo.currentPage} of ${pageInfo.lastPage}` })
       .setTimestamp();
     for (let anime of airingSchedules) {
       let title: string = Anime.formatTitle(anime.media.title);
@@ -61,9 +61,9 @@ class Anime {
       }\nApproximate Airing at: ${airingAt.toDateString()}, ${extractDate(airingAt)}\n${Anime.aniListLink(
         anime.media.id,
       )}`;
-      embed.addField(title, desc);
+      embed.addFields({ name: title, value: desc });
     }
-    return { embed };
+    return { embeds: [embed] };
   }
 
   static async search(message: PrefixedMessage): Promise<SendMsgEmbed> {
@@ -72,22 +72,24 @@ class Anime {
     let result = await Anime.requestToAniList(searchAnime, { search: message.noPrefix });
     let anime: any = result.Media;
     let date = new Date(`${anime.startDate.year} ${anime.startDate.month} ${anime.startDate.day}`);
-    let embed = new MessageEmbed()
-      .setAuthor(`Studio: ${anime.studios.nodes[0].name}`)
+    let embed = new EmbedBuilder()
+      .setAuthor({ name: `Studio: ${anime.studios.nodes[0].name}` })
       .setTitle(Anime.formatTitle(anime.title, anime.format))
       .setDescription(anime.description)
       .setThumbnail(Anime.ANILIST_LOGO)
       .setURL(`${Anime.aniListLink(anime.id)}`)
-      .setFooter(`Aired on: ${date.toDateString()}`)
+      .setFooter({ text: `Aired on: ${date.toDateString()}` })
       .setTimestamp()
       .setImage(anime.coverImage.large)
-      .addField('Other Names', anime.synonyms.join(',\n') || 'None')
-      .addField('Source', anime.source)
-      .addField('Episodes', `${anime.episodes} (${anime.duration} min each)`)
-      .addField('Status', anime.status)
-      .addField('Tags', anime.tags.map((s: { name: string }) => s.name).join(', '))
-      .addField('Genres', anime.genres.join(', '));
-    return { embed };
+      .addFields(
+        { name: 'Other Names', value: anime.synonyms.join(',\n') || 'None' },
+        { name: 'Source', value: anime.source },
+        { name: 'Episodes', value: `${anime.episodes} (${anime.duration} min each)` },
+        { name: 'Status', value: anime.status },
+        { name: 'Tags', value: anime.tags.map((s: { name: string }) => s.name).join(', ') },
+        { name: 'Genres', value: anime.genres.join(', ') },
+      );
+    return { embeds: [embed] };
   }
 
   static async requestToAniList(query: string, variables: object): Promise<any> {

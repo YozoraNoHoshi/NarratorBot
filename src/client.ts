@@ -1,5 +1,5 @@
-import { Client } from 'discord.js';
+import { Client, GatewayIntentBits } from 'discord.js';
 
-const client: Client = new Client();
+const client: Client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 export default client;

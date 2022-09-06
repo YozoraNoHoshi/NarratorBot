@@ -1,5 +1,5 @@
 import { SendMsgEmbed, PrefixedMessage } from '../types';
-import { MessageEmbed, Message, PartialMessage } from 'discord.js';
+import { EmbedBuilder, Message, PartialMessage } from 'discord.js';
 import admin from '../firebase';
 
 const DELETED_MESSAGES_COLLECTION = process.env.NODE_ENV === 'test' ? 'deleted-messages-test' : 'deleted-messages';
@@ -47,7 +47,7 @@ export async function restoreMessages(message: PrefixedMessage): Promise<SendMsg
       .limit(25)
       .get();
 
-    let embed: MessageEmbed = new MessageEmbed()
+    let embed: EmbedBuilder = new EmbedBuilder()
       .setTitle('Message Log')
       .setDescription(`${log.size} recently deleted messages`)
       .setColor('#2F4F4F')
@@ -57,13 +57,13 @@ export async function restoreMessages(message: PrefixedMessage): Promise<SendMsg
 
     [...log.docs].reverse().forEach((d) => {
       const fieldContent = d.get('fieldContent');
-      embed.addField(`${d.get('authorTag')} - ${d.get('messageTime')}`, `${fieldContent}`);
+      embed.addFields({ name: `${d.get('authorTag')} - ${d.get('messageTime')}`, value: `${fieldContent}` });
       batch.delete(d.ref);
     });
 
     await batch.commit();
 
-    return { embed };
+    return { embeds: [embed] };
   } catch (error) {
     console.error(error, message.channel.id);
     throw new Error('Error restoring the recent messages');

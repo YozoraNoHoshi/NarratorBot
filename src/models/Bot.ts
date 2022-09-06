@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { MethodMap, BotCommand, SendMsgEmbed, ResponseMap, PrefixedMessage } from '../types';
 import fMessage, { BOLD, ITALICS } from '../helpers/fMessage';
 import { ADMIN_USER_ID, BOT_PREFIX } from '../config';
@@ -73,7 +73,7 @@ class Bot {
     methodMap: MethodMap,
     responseMap: any = Bot.responseMap,
   ): SendMsgEmbed {
-    let embed: MessageEmbed = new MessageEmbed()
+    let embed: EmbedBuilder = new EmbedBuilder()
       .setTitle(`${fMessage('Available Commands', BOLD)}`)
       .setColor('#00CED1')
       .setDescription(`Commands should be prefixed with '${BOT_PREFIX}'`)
@@ -83,10 +83,11 @@ class Bot {
       if (key !== 'help' && key !== 'admin') {
         let desc: string =
           typeof responseMap[key] === 'string' ? responseMap[key] || noDescription : `${key} has its own submenu`;
-        embed.addField(`${fMessage(key, BOLD)}`, fMessage(desc, ITALICS));
+
+        embed.addFields({ name: fMessage(key, BOLD), value: fMessage(desc, ITALICS) });
       }
     }
-    return { embed };
+    return { embeds: [embed] };
   }
 }
 

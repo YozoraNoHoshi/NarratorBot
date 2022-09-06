@@ -1,6 +1,6 @@
 // import db from '../db';
 import createError from '../helpers/createError';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import fMessage, { BOLD } from '../helpers/fMessage';
 import { SendMsgEmbed, MethodMap, ResponseMap, PrefixedMessage } from '../types';
 import { EMOJI_PREFIX, EMOJI_SUFFIX } from '../config';
@@ -8,8 +8,8 @@ import admin from '../firebase';
 import { emoji } from '../helpers';
 
 type CreateEmbedFunction = {
-  (): MessageEmbed;
-  (i: number, numEmbeds: number): MessageEmbed;
+  (): EmbedBuilder;
+  (i: number, numEmbeds: number): EmbedBuilder;
 };
 
 const PROTECTED_EMOJI_LIST: Set<string> = new Set(['shi']);
@@ -39,7 +39,7 @@ function emojiListCreateEmbeds(
 ): SendMsgEmbed | SendMsgEmbed[] {
   const result = snap.docs;
   const createEmbed: CreateEmbedFunction = (i?: number, numEmbeds?: number) => {
-    let embed = new MessageEmbed()
+    let embed = new EmbedBuilder()
       .setTitle(`${fMessage('Available Emoji', BOLD)}`)
       .setColor('#00CED1')
       .setTimestamp();
@@ -49,13 +49,11 @@ function emojiListCreateEmbeds(
   };
 
   if (numEmbeds > 1) {
-    const embeds = Array.from({ length: numEmbeds }, (v, k) => {
-      return { embed: createEmbed(k, numEmbeds) };
-    });
+    const embeds = Array.from({ length: numEmbeds }, (v, k) => createEmbed(k, numEmbeds));
     let currentEmbedIndex = 0;
     let currentEmbedCount = 0;
     for (let emojiObj of result) {
-      embeds[currentEmbedIndex].embed.addField(emojiObj.get('name'), emojiObj.get('image'));
+      embeds[currentEmbedIndex].addFields({ name: emojiObj.get('name'), value: emojiObj.get('image') });
       currentEmbedCount += 1;
 
       if (currentEmbedCount >= 25) {
@@ -63,13 +61,13 @@ function emojiListCreateEmbeds(
         currentEmbedCount = 0;
       }
     }
-    return embeds;
+    return { embeds };
   } else {
     let embed = createEmbed();
     for (let emojiObj of result) {
-      embed.addField(emojiObj.get('name'), emojiObj.get('image'));
+      embed.addFields({ name: emojiObj.get('name'), value: emojiObj.get('image') });
     }
-    return { embed };
+    return { embeds: [embed] };
   }
 }
 

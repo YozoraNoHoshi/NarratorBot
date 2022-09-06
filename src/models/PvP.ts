@@ -1,6 +1,6 @@
 import { SendMsgEmbed, Player, PrefixedMessage } from '../types';
 import createError from '../helpers/createError';
-import { MessageEmbed, User } from 'discord.js';
+import { EmbedBuilder, User } from 'discord.js';
 import fMessage, { BOLD, ITALICS } from '../helpers/fMessage';
 import randomChoice from '../helpers/randomChoice';
 import client from '../client';
@@ -41,7 +41,7 @@ class PvP {
       ITALICS,
     )}`;
     // Initial settings for the duel, randomizes who goes first
-    let embed: MessageEmbed = PvP.duelRound(
+    let embed: EmbedBuilder = PvP.duelRound(
       {
         player1: { username: fMessage(player1.username, ITALICS), hp: playerHP },
         player2: {
@@ -49,15 +49,12 @@ class PvP {
           hp: player2 === client.user ? 9999 : playerHP,
         },
       },
-      new MessageEmbed()
-        .setTitle(fMessage(title, BOLD))
-        .setColor('#D2691E')
-        .setTimestamp(),
+      new EmbedBuilder().setTitle(fMessage(title, BOLD)).setColor('#D2691E').setTimestamp(),
       0.5 < Math.random(),
       player2 === client.user,
     );
 
-    return { embed };
+    return { embeds: [embed] };
   }
 
   private static duelRound(
@@ -65,7 +62,7 @@ class PvP {
     embed: any,
     p2Turn: boolean,
     bot: boolean,
-  ): MessageEmbed {
+  ): EmbedBuilder {
     // base case, prints result on the top
     if (players.player1.hp <= 0 || players.player2.hp <= 0 || embed.fields.length >= 24) {
       return embed.setDescription(`${PvP.dispHP(players.player1)} - ${PvP.dispHP(players.player2)}`);
