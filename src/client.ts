@@ -1,5 +1,7 @@
 import { Client, GatewayIntentBits } from 'discord.js';
 
-const client: Client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client: Client = new Client({
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+});
 
 export default client;

@@ -4,19 +4,17 @@ import { PrefixedMessage, SendMsgEmbed } from './types';
 import Bot from './models/Bot';
 import { retrieveEmoji } from './models/Emoji';
 import client from './client';
-import { ActivityType, Message } from 'discord.js';
+import { ActivityType, Events } from 'discord.js';
 import { addDeleted } from './models/MessageLog';
 
 const emojiRegex = new RegExp(`^(${EMOJI_PREFIX})(\\w+)(${EMOJI_SUFFIX})?(\\s)?(${EXTRA_FLAGS}[a-z]+)?`);
 
-client.on('ready', () => {
+client.on(Events.ClientReady, () => {
   console.log('Drain your glass!');
   client.user!.setActivity(process.env.ACTIVITY_LABEL || 'anime.', { type: ActivityType.Watching });
 });
 
-client.on('messageCreate', async (rawMessage): Promise<void> => {
-  console.log('Message', rawMessage.content);
-  console.log(`thef rawMessage`, JSON.stringify(rawMessage, null, 2));
+client.on(Events.MessageCreate, async (rawMessage): Promise<void> => {
   const message: PrefixedMessage = rawMessage as PrefixedMessage;
   try {
     if (message.author === client.user) {
@@ -60,7 +58,7 @@ client.on('messageCreate', async (rawMessage): Promise<void> => {
   }
 });
 
-client.on('messageDelete', (message) => {
+client.on(Events.MessageDelete, (message) => {
   // add it to the messageLog class via method
   try {
     // Ignores Bot messages and DMs
