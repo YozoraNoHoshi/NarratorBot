@@ -28,14 +28,14 @@ test('It should restore messages that were deleted', async () => {
 
   let response = await restoreMessages(makeMessage(6));
   expect(response).toHaveProperty('embed');
-  expect(response.embed).toHaveProperty('title', 'Message Log');
-  expect(response.embed).toHaveProperty('color');
-  expect(response.embed).toHaveProperty('timestamp');
-  expect(response.embed).toHaveProperty('description', '5 recently deleted messages');
-  expect(response.embed).toHaveProperty('fields');
-  expect(response.embed.fields!.length).toBe(5);
-  expect(response.embed.fields![0]).toHaveProperty('name', `another blah#1323 - ${date.toDateString()}`);
-  expect(response.embed.fields![0]).toHaveProperty('value', 'blegh');
+  expect(response.embeds[0].data).toHaveProperty('title', 'Message Log');
+  expect(response.embeds[0].data).toHaveProperty('color');
+  expect(response.embeds[0].data).toHaveProperty('timestamp');
+  expect(response.embeds[0].data).toHaveProperty('description', '5 recently deleted messages');
+  expect(response.embeds[0].data).toHaveProperty('fields');
+  expect(response.embeds[0].data.fields!.length).toBe(5);
+  expect(response.embeds[0].data.fields![0]).toHaveProperty('name', `another blah#1323 - ${date.toDateString()}`);
+  expect(response.embeds[0].data.fields![0]).toHaveProperty('value', 'blegh');
 });
 
 function makeMessage(id: any, channel?: string): any {
