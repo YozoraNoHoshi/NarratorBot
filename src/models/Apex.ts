@@ -127,17 +127,18 @@ class ApexLegendsCommands {
         embed.addFields({
           name: `Current ${nameAddendum || key} Map`,
           value: `${current.map} (${current.remainingTimer})`,
-          // inline: true,
+          inline: true,
         });
         embed.addFields({
           name: `Next ${nameAddendum || key} Map`,
           value: `${next.map} for ${next.DurationInMinutes} minutes.`,
-          // inline: true,
+          inline: true,
         });
       }
     };
 
     addFieldsToEmbed(ApexRotationKeys.battle_royale, 'Battle Royale');
+    embed.addFields({ name: '', value: '' });
     addFieldsToEmbed(ApexRotationKeys.ranked, 'Ranked');
     addFieldsToEmbed(ApexRotationKeys.ltm, 'LTM');
 
