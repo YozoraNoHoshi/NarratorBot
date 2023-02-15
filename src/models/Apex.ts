@@ -125,12 +125,16 @@ class ApexLegendsCommands {
         // embed.addFields({ name: 'Current LTM Mode', value: `${ltmData.current.eventName}` });
       } else {
         embed.addFields({
-          name: `Current ${nameAddendum || key} Map`,
-          value: `${current.map} (${current.remainingTimer})`,
+          name: `${nameAddendum || key} Rotation`,
+          value: `Changes in: ${current.remainingTimer}`,
+        });
+        embed.addFields({
+          name: `Current Map`,
+          value: `${current.map}`,
           inline: true,
         });
         embed.addFields({
-          name: `Next ${nameAddendum || key} Map`,
+          name: `Next Map`,
           value: `${next.map} for ${next.DurationInMinutes} minutes.`,
           inline: true,
         });
@@ -138,7 +142,6 @@ class ApexLegendsCommands {
     };
 
     addFieldsToEmbed(ApexRotationKeys.battle_royale, 'Battle Royale');
-    embed.addFields({ name: '', value: '' });
     addFieldsToEmbed(ApexRotationKeys.ranked, 'Ranked');
     addFieldsToEmbed(ApexRotationKeys.ltm, 'LTM');
 
