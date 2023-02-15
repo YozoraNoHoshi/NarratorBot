@@ -69,6 +69,14 @@ interface ApexRotationResponse {
   ltm: ApexLTMResponse;
 }
 
+const enum ApexRotationKeys {
+  battle_royale = 'battle_royale',
+  ranked = 'ranked',
+  arenas = 'arenas',
+  arenasRanked = 'arenasRanked',
+  ltm = 'ltm',
+}
+
 type ApexCraftingRotation = ApexCraftingBundle[];
 interface ApexCraftingBundle {
   bundle: string;
@@ -94,39 +102,42 @@ class ApexLegendsCommands {
   static responseMap: ResponseMap = {
     map: 'Display the current map rotation',
     craft: 'Display the current crafting rotation',
-    ranked: 'Display the current ranked rotation',
     ltm: 'Display the current LTM',
   };
   static methodMap: MethodMap = {
     help: ApexLegendsCommands.responseMap,
     map: ApexLegendsCommands.mapRotation,
     craft: ApexLegendsCommands.craftingRotation,
-    ranked: ApexLegendsCommands.rankedRotation,
     ltm: ApexLegendsCommands.ltmRotation,
   };
 
   static async mapRotation(): Promise<SendMsgEmbed> {
-    const url = `${APEX_MAP_ROTATION_URL}?auth=${process.env.APEX_API_KEY}`;
-    const { data }: { data: ApexMapResponse } = await Axios.get(url);
-    const { current, next } = data;
-
-    const embed = new EmbedBuilder().setTitle('Apex Legends Map Rotation');
-    embed.addFields({ name: 'Current Map', value: `${current.map} (${current.remainingTimer})` });
-    embed.addFields({ name: 'Next Map', value: `${next.map} for ${next.DurationInMinutes} minutes.` });
-    embed.setImage(current.asset);
-    embed.setColor('#0094FF');
-    return { embeds: [embed] };
-  }
-
-  static async rankedRotation(): Promise<SendMsgEmbed> {
     const url = `${APEX_MAP_ROTATION_URL}?auth=${process.env.APEX_API_KEY}&version=2`;
     const { data }: { data: ApexRotationResponse } = await Axios.get(url);
-    const { current, next } = data.ranked;
 
-    const embed = new EmbedBuilder().setTitle('Apex Legends Ranked Map Rotation');
-    embed.addFields({ name: 'Current Map', value: `${current.map} (${current.remainingTimer})` });
-    embed.addFields({ name: 'Next Map', value: `${next.map} for ${next.DurationInMinutes} minutes.` });
-    embed.setImage(current.asset);
+    const embed = new EmbedBuilder().setTitle('Apex Legends Current Map Rotation');
+    const addFieldsToEmbed = (key: ApexRotationKeys, nameAddendum?: string) => {
+      const { current, next } = data[key];
+
+      if (key === ApexRotationKeys.ltm) {
+        const ltmData = data.ltm;
+        embed.addFields({ name: 'Current Mode', value: `${ltmData.current.eventName}` });
+      }
+      embed.addFields({
+        name: `Current ${nameAddendum || key} Map`,
+        value: `${current.map} (${current.remainingTimer})`,
+      });
+      embed.addFields({
+        name: `Next ${nameAddendum || key} Map`,
+        value: `${next.map} for ${next.DurationInMinutes} minutes.`,
+      });
+    };
+
+    addFieldsToEmbed(ApexRotationKeys.battle_royale, 'Battle Royale');
+    addFieldsToEmbed(ApexRotationKeys.ranked, 'Ranked');
+    addFieldsToEmbed(ApexRotationKeys.ltm, 'LTM');
+
+    embed.setImage(data.ranked.current.asset);
     embed.setColor('#0094FF');
     return { embeds: [embed] };
   }
