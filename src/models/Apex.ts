@@ -129,13 +129,11 @@ class ApexLegendsCommands {
         value: `${current.map} (${current.remainingTimer})`,
         inline: true,
       });
-      if (key !== ApexRotationKeys.ranked) {
-        embed.addFields({
-          name: `Next ${nameAddendum || key} Map`,
-          value: `${next.map} for ${next.DurationInMinutes} minutes.`,
-          inline: true,
-        });
-      }
+      embed.addFields({
+        name: `Next ${nameAddendum || key} Map`,
+        value: `${next.map} for ${next.DurationInMinutes} minutes.`,
+        inline: true,
+      });
     };
 
     addFieldsToEmbed(ApexRotationKeys.battle_royale, 'Battle Royale');
