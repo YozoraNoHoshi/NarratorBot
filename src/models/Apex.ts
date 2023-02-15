@@ -30,6 +30,45 @@ interface ApexMapResponse {
   };
 }
 
+interface ApexLTMResponse {
+  current: {
+    start: number;
+    end: number;
+    readableDate_start: string;
+    readableDate_end: string;
+    map: string;
+    code: string;
+    DurationInSecs: number;
+    DurationInMinutes: number;
+    eventName: string;
+    isActive: boolean;
+    asset: string;
+    remainingSecs: number;
+    remainingMins: number;
+    remainingTimer: string;
+  };
+  next: {
+    start: number;
+    end: number;
+    readableDate_start: string;
+    readableDate_end: string;
+    map: string;
+    code: string;
+    DurationInSecs: number;
+    DurationInMinutes: number;
+    eventName: string;
+    asset: string;
+  };
+}
+
+interface ApexRotationResponse {
+  battle_royale: ApexMapResponse;
+  ranked: ApexMapResponse;
+  arenas: ApexMapResponse;
+  arenasRanked: ApexMapResponse;
+  ltm: ApexLTMResponse;
+}
+
 type ApexCraftingRotation = ApexCraftingBundle[];
 interface ApexCraftingBundle {
   bundle: string;
@@ -55,11 +94,15 @@ class ApexLegendsCommands {
   static responseMap: ResponseMap = {
     map: 'Display the current map rotation',
     craft: 'Display the current crafting rotation',
+    ranked: 'Display the current ranked rotation',
+    ltm: 'Display the current LTM',
   };
   static methodMap: MethodMap = {
     help: ApexLegendsCommands.responseMap,
     map: ApexLegendsCommands.mapRotation,
     craft: ApexLegendsCommands.craftingRotation,
+    ranked: ApexLegendsCommands.rankedRotation,
+    ltm: ApexLegendsCommands.ltmRotation,
   };
 
   static async mapRotation(): Promise<SendMsgEmbed> {
@@ -68,6 +111,33 @@ class ApexLegendsCommands {
     const { current, next } = data;
 
     const embed = new EmbedBuilder().setTitle('Apex Legends Map Rotation');
+    embed.addFields({ name: 'Current Map', value: `${current.map} (${current.remainingTimer})` });
+    embed.addFields({ name: 'Next Map', value: `${next.map} for ${next.DurationInMinutes} minutes.` });
+    embed.setImage(current.asset);
+    embed.setColor('#0094FF');
+    return { embeds: [embed] };
+  }
+
+  static async rankedRotation(): Promise<SendMsgEmbed> {
+    const url = `${APEX_MAP_ROTATION_URL}?auth=${process.env.APEX_API_KEY}&version=2`;
+    const { data }: { data: ApexRotationResponse } = await Axios.get(url);
+    const { current, next } = data.ranked;
+
+    const embed = new EmbedBuilder().setTitle('Apex Legends Ranked Map Rotation');
+    embed.addFields({ name: 'Current Map', value: `${current.map} (${current.remainingTimer})` });
+    embed.addFields({ name: 'Next Map', value: `${next.map} for ${next.DurationInMinutes} minutes.` });
+    embed.setImage(current.asset);
+    embed.setColor('#0094FF');
+    return { embeds: [embed] };
+  }
+
+  static async ltmRotation(): Promise<SendMsgEmbed> {
+    const url = `${APEX_MAP_ROTATION_URL}?auth=${process.env.APEX_API_KEY}&version=2`;
+    const { data }: { data: ApexRotationResponse } = await Axios.get(url);
+    const { current, next } = data.ltm;
+
+    const embed = new EmbedBuilder().setTitle('Apex Legends LTM Map Rotation');
+    embed.addFields({ name: 'Current Mode', value: `${current.eventName}` });
     embed.addFields({ name: 'Current Map', value: `${current.map} (${current.remainingTimer})` });
     embed.addFields({ name: 'Next Map', value: `${next.map} for ${next.DurationInMinutes} minutes.` });
     embed.setImage(current.asset);
